@@ -1,49 +1,32 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import io.forus.kindpakket.android.kindpakket.R;
+import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
+import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
+import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    private boolean currentLoggingIn = false;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -53,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -86,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+        if (currentLoggingIn) {
             return;
         }
 
@@ -123,9 +106,55 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            currentLoggingIn = true;
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+
+            ServiceProvider.getOAuthService().loadToken(
+                    email,
+                    password,
+                    new ApiCallable.Success<Object>() {
+                        @Override
+                        public void call(Object param) {
+                            currentLoggingIn = false;
+                            showProgress(false);
+
+                            finish();
+                        }
+                    },
+                    new ApiCallable.Failure() {
+                        @Override
+                        public void call(ErrorMessage errorMessage) {
+                            currentLoggingIn = false;
+                            showProgress(false);
+
+                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                            mPasswordView.requestFocus();
+                        }
+                    }
+            );
+
+            /*ServiceProvider.getUserService().login(
+                    email,
+                    password,
+                    new ApiCallable.Success<User>() {
+                        @Override
+                        public void call(User param) {
+                            currentLoggingIn = false;
+                            showProgress(false);
+
+                            finish();
+                        }
+                    },
+                    new ApiCallable.Failure() {
+                        @Override
+                        public void call(ErrorMessage errorMessage) {
+                            currentLoggingIn = false;
+                            showProgress(false);
+
+                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                            mPasswordView.requestFocus();
+                        }
+                    });*/
         }
     }
 
@@ -166,46 +195,6 @@ public class LoginActivity extends AppCompatActivity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
         }
     }
 }

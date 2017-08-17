@@ -9,4 +9,8 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+
+    <!--Exceptions-->
+    <string name="exception_server_response_failure">Unable to connect to server</string>
+    <string name="exception_server_response_notok">Invalid response from server</string>
 </resources>
