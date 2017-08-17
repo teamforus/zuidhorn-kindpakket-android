@@ -1,5 +1,7 @@
 package io.forus.kindpakket.android.kindpakket.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,10 +19,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final Context context = this;
         final Button loginButton = (Button) findViewById(R.id.main_login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Code here executes on main thread after user presses button
+
+                // TODO
+                Intent intent = new Intent(context, ScannerActivity.class);
+                startActivity(intent);
             }
         });
         final Button registerButton = (Button) findViewById(R.id.main_register_button);

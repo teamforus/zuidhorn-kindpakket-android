@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Kindpakket</string>
 
-    <!-- String related to main -->
+    <!-- Strings related to main -->
     <string name="main_welcome">Welcome</string>
     <string name="main_login_text">Heeft u deze app al eerder gebruikt?</string>
     <string name="main_login_button">Inloggen</string>
@@ -17,7 +17,12 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 
-    <!--Exceptions-->
+    <!-- Strings related to scanning -->
+    <string name="scanner_result">Result</string>
+    <string name="scanner_result_ok">Go back</string>
+    <string name="scanner_result_again">Continue scanning</string>
+
+    <!-- Exceptions -->
     <string name="exception_server_response_failure">Unable to connect to server</string>
     <string name="exception_server_response_notok">Invalid response from server</string>
     <string name="title_activity_main">MainActivity</string>
