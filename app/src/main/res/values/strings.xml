@@ -22,6 +22,13 @@
     <string name="scanner_result_ok">Go back</string>
     <string name="scanner_result_again">Continue scanning</string>
 
+    <!-- Strings related to voucher processing -->
+    <string name="voucher_process_budget_text">Beschikbaar budget</string>
+    <string name="voucher_process_budget">Loading...</string>
+    <string name="voucher_process_use_text">Aankoop bedrag</string>
+    <string name="voucher_process_currency">EUR</string>
+    <string name="voucher_process_button">Bevestig</string>
+
     <!-- Exceptions -->
     <string name="exception_server_response_failure">Unable to connect to server</string>
     <string name="exception_server_response_notok">Invalid response from server</string>
