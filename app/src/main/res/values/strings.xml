@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Kindpakket</string>
 
+    <!-- String related to main -->
+    <string name="main_welcome">Welcome</string>
+    <string name="main_login_text">Heeft u deze app al eerder gebruikt?</string>
+    <string name="main_login_button">Inloggen</string>
+    <string name="main_register_text">Eerste keer?</string>
+    <string name="main_register_button">Aanmelden</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -13,4 +20,5 @@
     <!--Exceptions-->
     <string name="exception_server_response_failure">Unable to connect to server</string>
     <string name="exception_server_response_notok">Invalid response from server</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
