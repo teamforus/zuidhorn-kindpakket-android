@@ -10,8 +10,8 @@ public class ApiCallableExecuter {
     /**
      * Call passed callable and handle exception
      */
-    protected <Response> void onSuccessCallable(ApiCallable.Success<Response> onSuccessCallable,
-                                                Response response) {
+    protected <T> void onSuccessCallable(ApiCallable.Success<T> onSuccessCallable,
+                                         T response) {
         if (onSuccessCallable != null) {
             try {
                 onSuccessCallable.call(response);
@@ -26,8 +26,8 @@ public class ApiCallableExecuter {
     /**
      * Call passed callable and handle exception
      */
-    protected <Response> void onFailureCallable(ApiCallable.Failure onFailureCallable,
-                                                ErrorMessage errorMessage) {
+    protected void onFailureCallable(ApiCallable.Failure onFailureCallable,
+                                     ErrorMessage errorMessage) {
         // Log the throwable, just in case we will not handle the error
         Log.i(LOG_NAME, errorMessage.getDebugMessage());
 
