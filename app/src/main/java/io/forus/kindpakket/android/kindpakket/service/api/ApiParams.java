@@ -10,4 +10,7 @@ interface ApiParams {
 
     String URL_USER = URL_APP + "/user";
     String URL_USER_LOGIN = URL_APP + "/user/login";
+
+    String URL_VOUCHER = URL_APP + "/voucher";
+    String URL_VOUCHER_ID = URL_VOUCHER + "/{id}";
 }

@@ -26,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
                 // Code here executes on main thread after user presses button
 
                 // TODO
-                Intent intent = new Intent(context, ScannerActivity.class);
+                Intent intent = new Intent(context, VoucherReadActivity.class);
                 startActivity(intent);
             }
         });
         final Button registerButton = (Button) findViewById(R.id.main_register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                // TODO
             }
         });
     }

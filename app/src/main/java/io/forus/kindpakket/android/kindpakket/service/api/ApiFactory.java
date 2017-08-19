@@ -11,6 +11,7 @@ public class ApiFactory {
 
     private final OAuthServiceApi oAuthServiceApi;
     private final UserServiceApi userServiceApi;
+    private final VoucherServiceApi voucherServiceApi;
 
     private ApiFactory() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -20,6 +21,7 @@ public class ApiFactory {
 
         oAuthServiceApi = retrofit.create(OAuthServiceApi.class);
         userServiceApi = retrofit.create(UserServiceApi.class);
+        voucherServiceApi = retrofit.create(VoucherServiceApi.class);
     }
 
     public static OAuthServiceApi getOAuthServiceApi() {
@@ -28,5 +30,9 @@ public class ApiFactory {
 
     public static UserServiceApi getUserApi() {
         return instance.userServiceApi;
+    }
+
+    public static VoucherServiceApi getVoucherServiceApi() {
+        return instance.voucherServiceApi;
     }
 }

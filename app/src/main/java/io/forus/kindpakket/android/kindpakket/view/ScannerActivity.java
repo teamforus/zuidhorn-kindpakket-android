@@ -3,6 +3,7 @@ package io.forus.kindpakket.android.kindpakket.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,7 +16,13 @@ import io.forus.kindpakket.android.kindpakket.R;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends Activity implements ZXingScannerView.ResultHandler {
-    private final static String LOG_NAME = ScannerActivity.class.getName();
+    private static final String LOG_NAME = ScannerActivity.class.getName();
+
+    /**
+     * this value has to be in AndroidManifest for this activity
+     **/
+    public static final String SCANNER_ACTION = "android.intent.action.scanner";
+    public static final String SCANNER_RESULT = "result";
 
     private ZXingScannerView mScannerView;
 
@@ -63,6 +70,11 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         // Add the buttons
         builder.setPositiveButton(R.string.scanner_result_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                // set the result of this activity
+                Intent result = new Intent(SCANNER_ACTION);
+                result.putExtra(SCANNER_RESULT, result);
+                setResult(Activity.RESULT_OK, result);
+
                 finish();
             }
         });

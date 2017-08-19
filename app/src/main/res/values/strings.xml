@@ -22,6 +22,14 @@
     <string name="scanner_result_ok">Go back</string>
     <string name="scanner_result_again">Continue scanning</string>
 
+    <!-- Strings related to voucher reading -->
+    <string name="voucher_read_voucher_text">Please provide the voucher code. The code can be typed in or scanned.</string>
+    <string name="voucher_read_voucher_code">Code:</string>
+    <string name="voucher_read_voucher_code_field">Enter code here</string>
+    <string name="voucher_read_voucher_button">Search code</string>
+    <string name="voucher_read_scanner_button">Scan code</string>
+    <string name="voucher_read_invalid_code">The provided code is not valid.</string>
+
     <!-- Strings related to voucher processing -->
     <string name="voucher_process_budget_text">Beschikbaar budget</string>
     <string name="voucher_process_budget">Loading...</string>
@@ -32,5 +40,4 @@
     <!-- Exceptions -->
     <string name="exception_server_response_failure">Unable to connect to server</string>
     <string name="exception_server_response_notok">Invalid response from server</string>
-    <string name="title_activity_main">MainActivity</string>
 </resources>
