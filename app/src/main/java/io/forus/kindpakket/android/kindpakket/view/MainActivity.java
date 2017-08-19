@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
+import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ScannerActivity" />
-        <activity android:name=".view.VoucherProcessActivity" />
-        <activity android:name=".view.VoucherReadActivity"></activity>
+        <activity android:name=".view.voucher.VoucherProcessActivity" />
+        <activity android:name=".view.voucher.VoucherReadActivity"></activity>
     </application>
 
 </manifest>

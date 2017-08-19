@@ -1,4 +1,4 @@
-package io.forus.kindpakket.android.kindpakket.view;
+package io.forus.kindpakket.android.kindpakket.view.voucher;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import io.forus.kindpakket.android.kindpakket.model.Voucher;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
+import io.forus.kindpakket.android.kindpakket.view.ScannerActivity;
 
 public class VoucherReadActivity extends AppCompatActivity {
     private static final int SCAN_CODE_REQUEST = 1;

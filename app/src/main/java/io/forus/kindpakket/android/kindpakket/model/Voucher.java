@@ -17,4 +17,12 @@ public class Voucher {
     public float getMaxAmount() {
         return maxAmount;
     }
+
+    @Override
+    public String toString() {
+        return "Voucher{" +
+                "code='" + code + '\'' +
+                ", maxAmount=" + maxAmount +
+                '}';
+    }
 }

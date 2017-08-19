@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="io.forus.kindpakket.android.kindpakket.view.VoucherProcessActivity">
+    tools:context="io.forus.kindpakket.android.kindpakket.view.voucher.VoucherProcessActivity">
 
     <TextView
         android:id="@+id/voucher_process_budget_text"

@@ -16,7 +16,7 @@ public class ApiCallableExecuter {
             try {
                 onSuccessCallable.call(response);
             } catch (Exception e) {
-                Log.w(LOG_NAME, "onSuccessCallable Callable exception" + e.getLocalizedMessage());
+                Log.w(LOG_NAME, "onSuccessCallable Callable exception " + e.getLocalizedMessage());
             }
         } else {
             Log.w(LOG_NAME, "onSuccessCallable==null");
@@ -35,7 +35,7 @@ public class ApiCallableExecuter {
             try {
                 onFailureCallable.call(errorMessage);
             } catch (Exception e) {
-                Log.w(LOG_NAME, "onFailureCallable Callable exception" + e.getLocalizedMessage());
+                Log.w(LOG_NAME, "onFailureCallable Callable exception " + e.getLocalizedMessage());
             }
         } else {
             Log.w(LOG_NAME, "onFailureCallable==null");
