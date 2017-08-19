@@ -12,7 +12,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.LoginActivity" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:noHistory="true" />
         <activity
             android:name=".view.MainActivity"
             android:label="@string/app_name"
@@ -23,9 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ScannerActivity" />
+        <activity
+            android:name=".view.ScannerActivity"
+            android:noHistory="true" />
         <activity android:name=".view.voucher.VoucherProcessActivity" />
-        <activity android:name=".view.voucher.VoucherReadActivity"></activity>
+        <activity android:name=".view.voucher.VoucherReadActivity" />
+        <activity
+            android:name=".view.registration.RegistrationActivity"
+            android:noHistory="true" />
     </application>
 
 </manifest>

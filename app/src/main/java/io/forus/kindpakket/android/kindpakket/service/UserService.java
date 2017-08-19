@@ -21,46 +21,32 @@ import retrofit2.Response;
 public class UserService extends ApiCallableExecuter {
     private static final String LOG_NAME = UserService.class.getName();
 
-    private User _user = User.INVALID;
-
     UserService() {
     }
 
-    public User getCurrentUser() {
-        return _user;
-    }
+    public void register(String email,
+                         String password,
+                         String kvk,
+                         String iban,
+                         final ApiCallable.Success<User> successCallable,
+                         final ApiCallable.Failure failureCallable) {
+        Map<String, String> request = new HashMap<>();
+        request.put("email", email);
+        request.put("password", password);
+        request.put("kvk", kvk);
+        request.put("iban", iban);
 
-    public boolean hasValidUser() {
-        return _user != User.INVALID;
-    }
+        ApiFactory.getUserApi().register(request).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                onLoginSuccess(response, successCallable, failureCallable);
+            }
 
-    private void setUser(User user) {
-        _user = user;
-    }
-
-    public void login(String email,
-                      String password,
-                      final ApiCallable.Success<User> successCallable,
-                      final ApiCallable.Failure failureCallable) {
-        if (!hasValidUser()) {
-            Map<String, String> request = new HashMap<>();
-            request.put("email", email);
-            request.put("password", password);
-
-            ApiFactory.getUserApi().login(request).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    onLoginSuccess(response, successCallable, failureCallable);
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    onFailureCallable(failureCallable, new ServerFailureErrorMessage(t));
-                }
-            });
-        } else {
-            Log.e(LOG_NAME, "This user is already registered at the server.");
-        }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                onFailureCallable(failureCallable, new ServerFailureErrorMessage(t));
+            }
+        });
     }
 
     private void onLoginSuccess(Response<User> response,
@@ -68,13 +54,11 @@ public class UserService extends ApiCallableExecuter {
                                 final ApiCallable.Failure failureCallable) {
         if (response.code() == HttpURLConnection.HTTP_OK) {
             User user = response.body();
-            Log.i(LOG_NAME, "user logged in " + user.toString());
-
-            setUser(user);
+            Log.i(LOG_NAME, "user registered " + user.toString());
 
             onSuccessCallable(successCallable, response.body());
         } else {
-            Log.w(LOG_NAME, "error creation of user: " + response.raw().message());
+            Log.w(LOG_NAME, "error registration of user: " + response.raw().message());
 
             ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
             onFailureCallable(failureCallable, errorMessage);

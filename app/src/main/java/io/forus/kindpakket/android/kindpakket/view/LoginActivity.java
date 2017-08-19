@@ -3,6 +3,9 @@ package io.forus.kindpakket.android.kindpakket.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +22,9 @@ import android.widget.TextView;
 import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
+import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
+import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -109,6 +114,13 @@ public class LoginActivity extends AppCompatActivity {
             currentLoggingIn = true;
             showProgress(true);
 
+            SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
+            final SharedPreferences.Editor editor = settings.edit();
+            editor.putString(SettingParams.PREFS_USER_EMAIL, email);
+            editor.putString(SettingParams.PREFS_USER_PASS, password);
+            editor.apply();
+
+            final Context context = this;
             ServiceProvider.getOAuthService().loadToken(
                     email,
                     password,
@@ -118,7 +130,11 @@ public class LoginActivity extends AppCompatActivity {
                             currentLoggingIn = false;
                             showProgress(false);
 
-                            finish();
+                            editor.putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true);
+                            editor.apply();
+
+                            Intent intent = new Intent(context, VoucherReadActivity.class);
+                            startActivity(intent);
                         }
                     },
                     new ApiCallable.Failure() {
@@ -132,29 +148,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
             );
-
-            /*ServiceProvider.getUserService().login(
-                    email,
-                    password,
-                    new ApiCallable.Success<User>() {
-                        @Override
-                        public void call(User param) {
-                            currentLoggingIn = false;
-                            showProgress(false);
-
-                            finish();
-                        }
-                    },
-                    new ApiCallable.Failure() {
-                        @Override
-                        public void call(ErrorMessage errorMessage) {
-                            currentLoggingIn = false;
-                            showProgress(false);
-
-                            mPasswordView.setError(getString(R.string.error_incorrect_password));
-                            mPasswordView.requestFocus();
-                        }
-                    });*/
         }
     }
 

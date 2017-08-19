@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
+import io.forus.kindpakket.android.kindpakket.view.registration.RegistrationActivity;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        if (alreadyRegistered()) {
+        if (alreadyLoggedIn()) {
             Intent intent = new Intent(context, VoucherReadActivity.class);
             startActivity(intent);
         }
@@ -33,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
         final Button loginButton = (Button) findViewById(R.id.main_login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-
-                // TODO
+                // TODO - LoginActivity
                 Intent intent = new Intent(context, VoucherReadActivity.class);
                 startActivity(intent);
             }
@@ -43,12 +42,13 @@ public class MainActivity extends AppCompatActivity {
         final Button registerButton = (Button) findViewById(R.id.main_register_button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO
+                Intent intent = new Intent(context, RegistrationActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private boolean alreadyRegistered() {
+    private boolean alreadyLoggedIn() {
         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
         return settings.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
     }

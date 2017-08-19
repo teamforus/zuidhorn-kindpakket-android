@@ -16,6 +16,16 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="login_forgot_password">Forgot password?</string>
+
+    <!-- Strings related to registration -->
+    <string name="registration_text">Please fill in the information to register</string>
+    <string name="registration_email">Email (used for login)</string>
+    <string name="registration_password">Password</string>
+    <string name="registration_kvk">KVK nummer</string>
+    <string name="registration_iban">IBAN nummer</string>
+    <string name="registration_companyname">Bedrijfsnaam</string>
+    <string name="registration_button">Bevestig</string>
 
     <!-- Strings related to scanning -->
     <string name="scanner_result">Scanned</string>
@@ -32,7 +42,7 @@
 
     <!-- Strings related to voucher processing -->
     <string name="voucher_process_budget_text">Beschikbaar budget</string>
-    <string name="voucher_process_budget">Loading...</string>
+    <string name="voucher_process_budget">Loading&#8230;</string>
     <string name="voucher_process_use_text">Aankoop bedrag</string>
     <string name="voucher_process_currency">EUR</string>
     <string name="voucher_process_button">Bevestig</string>

@@ -8,9 +8,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface UserServiceApi {
-    @POST(ApiParams.URL_USER_LOGIN)
-    Call<User> login(@Body Object object);
-
     @GET(ApiParams.URL_USER)
     Call<User> getUser(@Header(value = ApiParams.AUTHORIZATION) String token);
+
+    @POST(ApiParams.URL_USER_REGISTER)
+    Call<User> register(@Body Object object);
 }

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.model.Voucher;
@@ -15,6 +14,7 @@ import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.ScannerActivity;
+import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
 
 public class VoucherReadActivity extends AppCompatActivity {
     private static final int SCAN_CODE_REQUEST = 1;
@@ -58,6 +58,8 @@ public class VoucherReadActivity extends AppCompatActivity {
     }
 
     private void processCode(final String code) {
+        voucherCodeField.setError(null);
+
         final Activity activity = this;
         ServiceProvider.getVoucherService().getVoucher(code,
                 new ApiCallable.Success<Voucher>() {
@@ -71,12 +73,11 @@ public class VoucherReadActivity extends AppCompatActivity {
                 new ApiCallable.Failure() {
                     @Override
                     public void call(final ErrorMessage errorMessage) {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(activity, getResources().getString(R.string.voucher_read_invalid_code) + "\n" + errorMessage, Toast.LENGTH_SHORT);
-                            }
-                        });
+                        String message = getResources().getString(R.string.voucher_read_invalid_code);
+                        voucherCodeField.setError(message);
+                        voucherCodeField.requestFocus();
+
+                        new ApiCallableFailureToast(activity).call(errorMessage);
                     }
                 });
     }
