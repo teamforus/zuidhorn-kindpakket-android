@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import io.forus.kindpakket.android.kindpakket.R;
@@ -17,16 +18,20 @@ import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 public class VoucherReadActivity extends AppCompatActivity {
     private static final int SCAN_CODE_REQUEST = 1;
 
+    private EditText voucherCodeField;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voucher_read);
 
+        voucherCodeField = (EditText) findViewById(R.id.voucher_read_voucher_code_field);
+
         final Button codeEnteredButton = (Button) findViewById(R.id.voucher_read_voucher_button);
         codeEnteredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = codeEnteredButton.getText().toString();
+                String code = voucherCodeField.getText().toString();
                 processCode(code);
             }
         });
@@ -46,6 +51,7 @@ public class VoucherReadActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SCAN_CODE_REQUEST && resultCode == RESULT_OK) {
             String code = data.getStringExtra(ScannerActivity.SCANNER_RESULT);
+            voucherCodeField.setText(code);
             processCode(code);
         }
     }

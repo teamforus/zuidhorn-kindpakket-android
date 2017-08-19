@@ -18,9 +18,9 @@
     <string name="error_field_required">This field is required</string>
 
     <!-- Strings related to scanning -->
-    <string name="scanner_result">Result</string>
-    <string name="scanner_result_ok">Go back</string>
-    <string name="scanner_result_again">Continue scanning</string>
+    <string name="scanner_result">Scanned</string>
+    <string name="scanner_result_ok">Use result</string>
+    <string name="scanner_result_again">Scan again</string>
 
     <!-- Strings related to voucher reading -->
     <string name="voucher_read_voucher_text">Please provide the voucher code. The code can be typed in or scanned.</string>

@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/voucher_read_voucher_code_field" />
+                android:hint="@string/voucher_read_voucher_code_field" />
         </LinearLayout>
 
         <Button

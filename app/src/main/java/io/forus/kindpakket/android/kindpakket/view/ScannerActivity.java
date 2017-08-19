@@ -18,10 +18,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class ScannerActivity extends Activity implements ZXingScannerView.ResultHandler {
     private static final String LOG_NAME = ScannerActivity.class.getName();
 
-    /**
-     * this value has to be in AndroidManifest for this activity
-     **/
-    public static final String SCANNER_ACTION = "android.intent.action.scanner";
     public static final String SCANNER_RESULT = "result";
 
     private ZXingScannerView mScannerView;
@@ -59,21 +55,21 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         showResult(result);
     }
 
-    private void showResult(String result) {
+    private void showResult(final String scanned) {
         // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // 2. Chain together various setter methods to set the dialog characteristics
-        builder.setMessage(result);
+        builder.setMessage(scanned);
         builder.setTitle(R.string.scanner_result);
 
         // Add the buttons
         builder.setPositiveButton(R.string.scanner_result_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // set the result of this activity
-                Intent result = new Intent(SCANNER_ACTION);
-                result.putExtra(SCANNER_RESULT, result);
-                setResult(Activity.RESULT_OK, result);
+                Intent result = new Intent();
+                result.putExtra(SCANNER_RESULT, scanned);
+                setResult(RESULT_OK, result);
 
                 finish();
             }
