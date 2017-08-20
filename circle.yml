@@ -19,7 +19,10 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Tests
-          command: ./gradlew lint test assembleRelease
+          command: ./gradlew lint test connectedAndroidTest assembleRelease
+      - run:
+          name: Build apk
+          command: ./gradlew assembleRelease
       - store_artifacts:
           path: app/build/outputs
           destination: outputs
