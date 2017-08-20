@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="bottom|center"
-            android:inputType="textPersonName"
             android:text="@string/main_login_text" />
 
         <Button
@@ -51,7 +50,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="bottom|center"
-            android:inputType="textPersonName"
             android:text="@string/main_register_text"
             android:textAlignment="center" />
 
