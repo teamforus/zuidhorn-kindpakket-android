@@ -25,7 +25,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText kvkView;
     private EditText ibanView;
     private EditText companynameView;
-    private Button submitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ibanView = (EditText) findViewById(R.id.registration_iban);
         companynameView = (EditText) findViewById(R.id.registration_companyname);
 
-        submitButton = (Button) findViewById(R.id.registration_button);
+        Button submitButton = (Button) findViewById(R.id.registration_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -19,7 +19,7 @@ public class VoucherProcessActivity extends AppCompatActivity {
 
     private static final String LOG_NAME = VoucherProcessActivity.class.getName();
 
-    private String voucher_code;
+    private String voucherCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,10 @@ public class VoucherProcessActivity extends AppCompatActivity {
         final TextView budget = (TextView) findViewById(R.id.voucher_process_budget);
 
         Intent intent = getIntent();
-        voucher_code = intent.getStringExtra(INTENT_CODE);
+        voucherCode = intent.getStringExtra(INTENT_CODE);
 
         final Activity activity = this;
-        ServiceProvider.getVoucherService().getVoucher(voucher_code,
+        ServiceProvider.getVoucherService().getVoucher(voucherCode,
                 new ApiCallable.Success<Voucher>() {
                     @Override
                     public void call(Voucher voucher) {

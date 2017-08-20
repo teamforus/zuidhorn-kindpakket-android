@@ -8,10 +8,10 @@ import io.forus.kindpakket.android.kindpakket.R;
 import retrofit2.Response;
 
 public class ServerResponseErrorMessage implements ErrorMessage {
-    private final Response<?> _response;
+    private final Response<?> response;
 
     public ServerResponseErrorMessage(Response<?> response) {
-        _response = response;
+        this.response = response;
     }
 
     @Override
@@ -21,9 +21,9 @@ public class ServerResponseErrorMessage implements ErrorMessage {
 
     @Override
     public String getDebugMessage() {
-        if (_response != null) {
+        if (response != null) {
             try {
-                return _response.errorBody().string();
+                return response.errorBody().string();
             } catch (IOException e) {
                 return e.getLocalizedMessage();
             }
