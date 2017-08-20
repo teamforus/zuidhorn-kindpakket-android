@@ -12,9 +12,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiFactory {
-    private static final String API_URL = "http://mvp.forus.io/";
+    public static String API_URL = "http://mvp.forus.io/";
 
-    private static final ApiFactory instance = new ApiFactory();
+    private static ApiFactory instance = new ApiFactory();
 
     private final OAuthServiceApi oAuthServiceApi;
     private final UserServiceApi userServiceApi;
@@ -39,18 +39,19 @@ public class ApiFactory {
                 })
                 .build();
 
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
         oAuthServiceApi = retrofit.create(OAuthServiceApi.class);
         userServiceApi = retrofit.create(UserServiceApi.class);
         voucherServiceApi = retrofit.create(VoucherServiceApi.class);
+    }
+
+    public static synchronized void build() {
+        instance = new ApiFactory();
     }
 
     public static OAuthServiceApi getOAuthServiceApi() {
