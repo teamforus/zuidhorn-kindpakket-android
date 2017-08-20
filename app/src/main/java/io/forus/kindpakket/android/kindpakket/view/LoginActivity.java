@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import io.forus.kindpakket.android.kindpakket.R;
+import io.forus.kindpakket.android.kindpakket.model.Token;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
@@ -159,9 +160,9 @@ public class LoginActivity extends AppCompatActivity {
         ServiceProvider.getOAuthService().loadToken(
                 email,
                 password,
-                new ApiCallable.Success<Object>() {
+                new ApiCallable.Success<Token>() {
                     @Override
-                    public void call(Object param) {
+                    public void call(Token param) {
                         currentLoggingIn = false;
                         showProgress(false);
 

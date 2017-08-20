@@ -23,10 +23,10 @@ public class VoucherService extends ApiCallableExecuter {
     }
 
     public void getVoucher(String code,
+                           String token,
                            final ApiCallable.Success<Voucher> successCallable,
                            final ApiCallable.Failure failureCallable) {
 
-        String token = "1"; //todo
         ApiFactory.getVoucherServiceApi().getVoucher(token, code).enqueue(new Callback<Voucher>() {
             @Override
             public void onResponse(Call<Voucher> call, Response<Voucher> response) {

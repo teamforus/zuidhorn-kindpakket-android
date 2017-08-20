@@ -27,15 +27,15 @@ public class OAuthService extends ApiCallableExecuter {
     OAuthService() {
     }
 
-    public Token getToken() {
-        return token;
+    public static String buildAuthorizationToken(Token token) {
+        return token.getTokenType() + " " + token.getAccessToken();
     }
 
     private void setToken(Token token) {
         this.token = token;
     }
 
-    public boolean hasValidToken() {
+    private boolean hasValidToken() {
         // TODO: check if token is valid according to expires_in
         return token != INVALID;
     }
@@ -66,7 +66,9 @@ public class OAuthService extends ApiCallableExecuter {
                 }
             });
         } else {
-            Log.e(LOG_NAME, "A valid token was already loaded.");
+            Log.i(LOG_NAME, "A valid token was already loaded.");
+
+            successCallable.call(token);
         }
     }
 
@@ -74,13 +76,13 @@ public class OAuthService extends ApiCallableExecuter {
                                 final ApiCallable.Success<Token> successCallable,
                                 final ApiCallable.Failure failureCallable) {
         if (response.code() == HttpURLConnection.HTTP_OK) {
-            Log.i(LOG_NAME, response.body().toString());
+            Log.d(LOG_NAME, response.body().toString());
 
             setToken(response.body());
 
             onSuccessCallable(successCallable, response.body());
         } else {
-            Log.w(LOG_NAME, "error receiving a token: " + response.raw().message());
+            Log.e(LOG_NAME, "error receiving a token: " + response.raw().message());
 
             ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
             onFailureCallable(failureCallable, errorMessage);
