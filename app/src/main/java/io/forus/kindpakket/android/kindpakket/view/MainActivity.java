@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
         final Button loginButton = (Button) findViewById(R.id.main_login_button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO - LoginActivity
-                Intent intent = new Intent(context, VoucherReadActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
             }
         });

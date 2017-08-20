@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private static final String URL_PASS_RESET = "http://mvp.forus.io/password/reset";
     private boolean currentLoggingIn = false;
 
     // UI references.
@@ -40,7 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+
         mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -63,8 +68,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        TextView mForgotPassword = (TextView) findViewById(R.id.login_forgot_password);
+        mForgotPassword.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWebSite(URL_PASS_RESET);
+            }
+        });
+
+
+        // Load defaults
+        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
+        mEmailView.setText(settings.getString(SettingParams.PREFS_USER_EMAIL, ""));
+        mPasswordView.setText(settings.getString(SettingParams.PREFS_USER_PASS, ""));
+    }
+
+    private void showWebSite(String url) {
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        webIntent.setData(Uri.parse(url));
+        this.startActivity(webIntent);
     }
 
 
@@ -114,45 +136,55 @@ public class LoginActivity extends AppCompatActivity {
             currentLoggingIn = true;
             showProgress(true);
 
-            SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
-            final SharedPreferences.Editor editor = settings.edit();
-            editor.putString(SettingParams.PREFS_USER_EMAIL, email);
-            editor.putString(SettingParams.PREFS_USER_PASS, password);
-            editor.apply();
+            saveUserInput(email, password);
 
-            final Context context = this;
-            ServiceProvider.getOAuthService().loadToken(
-                    email,
-                    password,
-                    new ApiCallable.Success<Object>() {
-                        @Override
-                        public void call(Object param) {
-                            currentLoggingIn = false;
-                            showProgress(false);
-
-                            editor.putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true);
-                            editor.apply();
-
-                            Intent intent = new Intent(context, VoucherReadActivity.class);
-                            startActivity(intent);
-                        }
-                    },
-                    new ApiCallable.Failure() {
-                        @Override
-                        public void call(ErrorMessage errorMessage) {
-                            currentLoggingIn = false;
-                            showProgress(false);
-
-                            mPasswordView.setError(getString(R.string.error_incorrect_password));
-                            mPasswordView.requestFocus();
-                        }
-                    }
-            );
+            executeLoginRequest(email, password);
         }
     }
 
     private boolean isEmailValid(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void saveUserInput(String email, String password) {
+        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
+        final SharedPreferences.Editor editor = settings.edit();
+        editor.putString(SettingParams.PREFS_USER_EMAIL, email);
+        editor.putString(SettingParams.PREFS_USER_PASS, password);
+        editor.apply();
+    }
+
+    private void executeLoginRequest(String email, String password) {
+        final Context context = this;
+        ServiceProvider.getOAuthService().loadToken(
+                email,
+                password,
+                new ApiCallable.Success<Object>() {
+                    @Override
+                    public void call(Object param) {
+                        currentLoggingIn = false;
+                        showProgress(false);
+
+                        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
+                        final SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true);
+                        editor.apply();
+
+                        Intent intent = new Intent(context, VoucherReadActivity.class);
+                        startActivity(intent);
+                    }
+                },
+                new ApiCallable.Failure() {
+                    @Override
+                    public void call(ErrorMessage errorMessage) {
+                        currentLoggingIn = false;
+                        showProgress(false);
+
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                    }
+                }
+        );
     }
 
     /**

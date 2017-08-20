@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.forus.kindpakket.android.kindpakket.model.Token;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallableExecuter;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiFactory;
@@ -20,28 +21,29 @@ import retrofit2.Response;
 public class OAuthService extends ApiCallableExecuter {
     private static final String LOG_NAME = OAuthService.class.getName();
 
-    private static final String INVALID = null;
-    private static String TOKEN = null;
+    private static final Token INVALID = null;
+    private Token token = null;
 
     OAuthService() {
     }
 
-    public String getToken() {
-        return TOKEN;
+    public Token getToken() {
+        return token;
     }
 
-    private void setToken(String token) {
-        TOKEN = token;
+    private void setToken(Token token) {
+        this.token = token;
     }
 
     public boolean hasValidToken() {
-        return TOKEN != INVALID;
+        // TODO: check if token is valid according to expires_in
+        return token != INVALID;
     }
 
     public void loadToken(
             String username,
             String password,
-            final ApiCallable.Success<Object> successCallable,
+            final ApiCallable.Success<Token> successCallable,
             final ApiCallable.Failure failureCallable) {
         if (!hasValidToken()) {
             Map<String, String> request = new HashMap<>();
@@ -52,14 +54,14 @@ public class OAuthService extends ApiCallableExecuter {
             request.put("grant_type", ServiceParams.API_GRANT_TYPE);
             request.put("scope", ServiceParams.API_SCOPE);
 
-            ApiFactory.getOAuthServiceApi().getToken(request).enqueue(new Callback<Object>() {
+            ApiFactory.getOAuthServiceApi().getToken(request).enqueue(new Callback<Token>() {
                 @Override
-                public void onResponse(Call<Object> call, Response<Object> response) {
+                public void onResponse(Call<Token> call, Response<Token> response) {
                     onLoginSuccess(response, successCallable, failureCallable);
                 }
 
                 @Override
-                public void onFailure(Call<Object> call, Throwable t) {
+                public void onFailure(Call<Token> call, Throwable t) {
                     onFailureCallable(failureCallable, new ServerFailureErrorMessage(t));
                 }
             });
@@ -68,11 +70,13 @@ public class OAuthService extends ApiCallableExecuter {
         }
     }
 
-    private void onLoginSuccess(Response<Object> response,
-                                final ApiCallable.Success<Object> successCallable,
+    private void onLoginSuccess(Response<Token> response,
+                                final ApiCallable.Success<Token> successCallable,
                                 final ApiCallable.Failure failureCallable) {
         if (response.code() == HttpURLConnection.HTTP_OK) {
             Log.i(LOG_NAME, response.body().toString());
+
+            setToken(response.body());
 
             onSuccessCallable(successCallable, response.body());
         } else {
