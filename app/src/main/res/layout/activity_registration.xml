@@ -34,20 +34,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/registration_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/registration_password"
-            android:inputType="textPassword" />
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
             android:id="@+id/registration_kvk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

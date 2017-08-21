@@ -25,16 +25,16 @@ public class UserService extends ApiCallableExecuter {
     }
 
     public void register(String email,
-                         String password,
                          String kvk,
                          String iban,
+                         String companyname,
                          final ApiCallable.Success<User> successCallable,
                          final ApiCallable.Failure failureCallable) {
         Map<String, String> request = new HashMap<>();
         request.put("email", email);
-        request.put("password", password);
-        request.put("kvk", kvk);
+        request.put("kvk_number", kvk);
         request.put("iban", iban);
+        request.put("companyname", companyname);
 
         ApiFactory.getUserApi().register(request).enqueue(new Callback<User>() {
             @Override

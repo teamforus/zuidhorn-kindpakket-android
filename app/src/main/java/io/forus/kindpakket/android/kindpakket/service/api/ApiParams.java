@@ -17,7 +17,7 @@ interface ApiParams {
     String URL_OAUTH_TOKEN = URL_OAUTH + "/token";
 
     String URL_USER = URL_APP + "/user";
-    String URL_USER_REGISTER = URL_APP + "/register";
+    String URL_USER_REGISTER = URL_APP + "/shop-keeper/sign-up";
 
     String URL_VOUCHER = URL_APP + "/vouchers";
     String URL_VOUCHER_ID = URL_VOUCHER + "/{id}";

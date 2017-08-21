@@ -13,26 +13,30 @@ import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.model.User;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
+import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
+import io.forus.kindpakket.android.kindpakket.view.LoginActivity;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
-import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText emailView;
-    private EditText passwordView;
     private EditText kvkView;
     private EditText ibanView;
     private EditText companynameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (PreferencesChecker.alreadyRegistered(this)) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
         emailView = (EditText) findViewById(R.id.registration_email);
-        passwordView = (EditText) findViewById(R.id.registration_password);
         kvkView = (EditText) findViewById(R.id.registration_kvk);
         ibanView = (EditText) findViewById(R.id.registration_iban);
         companynameView = (EditText) findViewById(R.id.registration_companyname);
@@ -51,23 +55,25 @@ public class RegistrationActivity extends AppCompatActivity {
 
         final SharedPreferences.Editor editor = settings.edit();
         editor.putString(SettingParams.PREFS_USER_EMAIL, emailView.getText().toString());
-        editor.putString(SettingParams.PREFS_USER_PASS, passwordView.getText().toString());
+        editor.remove(SettingParams.PREFS_USER_PASS);
         editor.putString(SettingParams.PREFS_USER_KVK, kvkView.getText().toString());
+        editor.putString(SettingParams.PREFS_USER_IBAN, ibanView.getText().toString());
+        editor.putString(SettingParams.PREFS_USER_COMPANYNAME, companynameView.getText().toString());
         editor.apply();
 
         final Activity activity = this;
         ServiceProvider.getUserService().register(
                 emailView.getText().toString(),
-                passwordView.getText().toString(),
                 kvkView.getText().toString(),
                 ibanView.getText().toString(),
+                companynameView.getText().toString(),
                 new ApiCallable.Success<User>() {
                     @Override
                     public void call(User param) {
                         editor.putBoolean(SettingParams.PREFS_USER_REGISTERED, true);
                         editor.apply();
 
-                        Intent intent = new Intent(activity, VoucherReadActivity.class);
+                        Intent intent = new Intent(activity, LoginActivity.class);
                         startActivity(intent);
                     }
                 },

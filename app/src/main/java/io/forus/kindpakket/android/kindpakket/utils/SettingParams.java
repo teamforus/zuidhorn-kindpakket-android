@@ -13,5 +13,7 @@ public interface SettingParams {
     String PREFS_USER_PASS = "user_password";
     String PREFS_USER_EMAIL = "user_email";
     String PREFS_USER_KVK = "user_kvk";
+    String PREFS_USER_IBAN = "user_iban";
+    String PREFS_USER_COMPANYNAME = "user_companyname";
     String PREFS_OAUTH_TOKEN = "oauth_token";
 }

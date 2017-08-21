@@ -15,6 +15,7 @@ import io.forus.kindpakket.android.kindpakket.service.OAuthService;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.OAuthServiceAdapter;
+import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.ScannerActivity;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
@@ -26,8 +27,14 @@ public class VoucherReadActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (!PreferencesChecker.alreadyLoggedIn(this)) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voucher_read);
+
 
         voucherCodeField = (EditText) findViewById(R.id.voucher_read_voucher_code_field);
 
