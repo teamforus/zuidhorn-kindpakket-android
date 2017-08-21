@@ -45,7 +45,7 @@ public class VoucherProcessActivity extends AppCompatActivity {
                             @Override
                             public void call(Voucher voucher) {
                                 Log.w(LOG_NAME, voucher.toString());
-                                String amount = String.format("%.2d", voucher.getMaxAmount());
+                                String amount = String.format("%.2f", voucher.getMaxAmount());
                                 budget.setText(amount);
                             }
                         },
