@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferencesChecker {
+    private PreferencesChecker() {
+    }
 
     public static boolean alreadyLoggedIn(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);

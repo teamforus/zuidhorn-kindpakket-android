@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiFactory {
+    // Not set to final, to allow testing
     public static String API_URL = "http://mvp.forus.io/";
 
     private static ApiFactory instance = new ApiFactory();
