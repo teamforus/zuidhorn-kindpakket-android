@@ -30,7 +30,7 @@ public class UserService extends ApiCallableExecuter {
                          String companyname,
                          final ApiCallable.Success<User> successCallable,
                          final ApiCallable.Failure failureCallable) {
-        Map<String, String> request = new HashMap<>();
+        Map<String, Object> request = new HashMap<>();
         request.put("email", email);
         request.put("kvk_number", kvk);
         request.put("iban", iban);

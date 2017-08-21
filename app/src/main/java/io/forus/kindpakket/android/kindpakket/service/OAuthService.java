@@ -46,7 +46,7 @@ public class OAuthService extends ApiCallableExecuter {
             final ApiCallable.Success<Token> successCallable,
             final ApiCallable.Failure failureCallable) {
         if (!hasValidToken()) {
-            Map<String, String> request = new HashMap<>();
+            Map<String, Object> request = new HashMap<>();
             request.put("client_id", ServiceParams.API_CLIENT_ID);
             request.put("client_secret", ServiceParams.API_CLIENT_SECRET);
             request.put("username", username);

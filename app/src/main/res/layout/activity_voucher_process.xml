@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal"
+                android:hint="@string/voucher_process_amount_hint"
                 android:text="@string/voucher_process_amount_default"
                 android:textAlignment="center" />
         </android.support.design.widget.TextInputLayout>

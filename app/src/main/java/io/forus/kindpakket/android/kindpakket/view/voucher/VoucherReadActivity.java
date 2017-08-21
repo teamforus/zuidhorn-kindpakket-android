@@ -44,6 +44,7 @@ public class VoucherReadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String code = voucherCodeField.getText().toString();
                 processCode(code);
+                voucherCodeField.setText("");
             }
         });
 

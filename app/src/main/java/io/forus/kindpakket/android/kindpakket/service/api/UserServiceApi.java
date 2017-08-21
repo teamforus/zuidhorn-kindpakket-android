@@ -1,5 +1,7 @@
 package io.forus.kindpakket.android.kindpakket.service.api;
 
+import java.util.Map;
+
 import io.forus.kindpakket.android.kindpakket.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,5 +14,5 @@ public interface UserServiceApi {
     Call<User> getUser(@Header(value = ApiParams.AUTHORIZATION) String token);
 
     @POST(ApiParams.URL_USER_REGISTER)
-    Call<User> register(@Body Object object);
+    Call<User> register(@Body Map<String, Object> request);
 }
