@@ -33,6 +33,7 @@ public class ApiFactory {
                                 .newBuilder()
                                 .addHeader(ApiParams.ACCEPT, ApiParams.ACCEPT_VALUE)
                                 .addHeader(ApiParams.CONTENT_TYPE, ApiParams.CONTENT_TYPE_VALUE)
+                                .addHeader(ApiParams.DEVICE_ID, ApiParams.DEVICE_ID_VALUE)
                                 .build();
                         return chain.proceed(request);
                     }
