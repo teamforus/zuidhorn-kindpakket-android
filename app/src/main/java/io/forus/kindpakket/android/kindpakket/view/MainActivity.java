@@ -43,4 +43,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // show only, if the user is not logged in already
+        if (PreferencesChecker.alreadyLoggedIn(this)) {
+            finish();
+        }
+    }
 }
