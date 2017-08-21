@@ -51,13 +51,13 @@ public class LoginActivityTest extends InstrumentationTestCase {
     }
 
     private void executeUiLogin() {
-        onView(ViewMatchers.withId(R.id.email))
+        onView(ViewMatchers.withId(R.id.login_email))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("test@forus.io"));
-        onView(ViewMatchers.withId(R.id.password))
+        onView(ViewMatchers.withId(R.id.login_password))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("testforusio"));
-        onView(ViewMatchers.withId(R.id.email_sign_in_button))
+        onView(ViewMatchers.withId(R.id.login_sign_in_button))
                 .perform(ViewActions.click());
     }
 
@@ -94,7 +94,7 @@ public class LoginActivityTest extends InstrumentationTestCase {
         executeUiLogin();
 
         String errorMessage = getTargetContext().getString(R.string.error_incorrect_password);
-        onView(withId(R.id.password)).check(matches(hasErrorText(errorMessage)));
+        onView(withId(R.id.login_password)).check(matches(hasErrorText(errorMessage)));
     }
 
     @After
