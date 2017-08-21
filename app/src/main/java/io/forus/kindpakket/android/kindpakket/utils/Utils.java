@@ -2,6 +2,7 @@ package io.forus.kindpakket.android.kindpakket.utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Patterns;
 
 import java.util.Locale;
 
@@ -16,5 +17,9 @@ public class Utils {
             //noinspection deprecation
             return context.getResources().getConfiguration().locale;
         }
+    }
+
+    public static boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

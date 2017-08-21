@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +24,7 @@ import io.forus.kindpakket.android.kindpakket.model.Token;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
+import io.forus.kindpakket.android.kindpakket.utils.Utils;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!Utils.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -141,10 +141,6 @@ public class LoginActivity extends AppCompatActivity {
 
             executeLoginRequest(email, password);
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private void saveUserInput(String email, String password) {
