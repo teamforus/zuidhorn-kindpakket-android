@@ -1,16 +1,55 @@
 <resources>
     <string name="app_name">Kindpakket</string>
 
+    <!-- Strings related to main -->
+    <string name="main_welcome">Welcome</string>
+    <string name="main_login_text">Heeft u deze app al eerder gebruikt?</string>
+    <string name="main_login_button">Inloggen</string>
+    <string name="main_register_text">Eerste keer?</string>
+    <string name="main_register_button">Aanmelden</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="login_forgot_password">Forgot password?</string>
+
+    <!-- Strings related to registration -->
+    <string name="registration_text">Please fill in the information to register</string>
+    <string name="registration_email">Email (used for login)</string>
+    <string name="registration_password">Password</string>
+    <string name="registration_kvk">KVK nummer</string>
+    <string name="registration_iban">IBAN nummer</string>
+    <string name="registration_companyname">Bedrijfsnaam</string>
+    <string name="registration_button">Bevestig</string>
+
+    <!-- Strings related to scanning -->
+    <string name="scanner_result">Scanned</string>
+    <string name="scanner_result_ok">Use result</string>
+    <string name="scanner_result_again">Scan again</string>
+
+    <!-- Strings related to voucher reading -->
+    <string name="voucher_read_voucher_text">Please provide the voucher code. The code can be typed in or scanned.</string>
+    <string name="voucher_read_voucher_code">Code:</string>
+    <string name="voucher_read_voucher_code_field">Enter code here</string>
+    <string name="voucher_read_voucher_button">Search code</string>
+    <string name="voucher_read_scanner_button">Scan code</string>
+    <string name="voucher_read_invalid_code">The provided code is not valid.</string>
+
+    <!-- Strings related to voucher processing -->
+    <string name="voucher_process_budget_text">Beschikbaar budget</string>
+    <string name="voucher_process_budget">Loading&#8230;</string>
+    <string name="voucher_process_use_text">Aankoop bedrag</string>
+    <string name="voucher_process_amount_default">0.00</string>
+    <string name="voucher_process_amount_hint">Enter amount</string>
+    <string name="voucher_process_currency">EUR</string>
+    <string name="voucher_process_button">Bevestig</string>
+
+    <!-- Exceptions -->
+    <string name="exception_server_response_failure">Unable to connect to server</string>
+    <string name="exception_server_response_notok">Invalid response from server</string>
 </resources>
