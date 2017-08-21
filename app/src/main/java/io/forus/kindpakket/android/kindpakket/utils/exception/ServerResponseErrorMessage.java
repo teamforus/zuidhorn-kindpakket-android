@@ -16,7 +16,8 @@ public class ServerResponseErrorMessage implements ErrorMessage {
 
     @Override
     public String getMessage(Context context) {
-        return context.getResources().getString(R.string.exception_server_response_notok);
+        return context.getResources().getString(R.string.exception_server_response_notok) +
+                "\n(" + response.raw().message() + ")";
     }
 
     @Override
