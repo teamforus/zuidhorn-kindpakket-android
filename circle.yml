@@ -24,6 +24,12 @@ jobs:
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+      - run:
+          name: Install screenshot gradle lib
+          command: |
+            mkdir ~/gradle-screenshot-lib
+            git clone https://github.com/facebook/screenshot-tests-for-android/ ~/gradle-screenshot-lib
+            ~/gradle-screenshot-lib/gradlew installAll
       - save_cache:
           paths:
             - ~/.gradle

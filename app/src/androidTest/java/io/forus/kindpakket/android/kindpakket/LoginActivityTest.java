@@ -8,6 +8,10 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.InstrumentationTestCase;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.facebook.testing.screenshot.Screenshot;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +21,8 @@ import org.junit.runner.RunWith;
 
 import io.forus.kindpakket.android.kindpakket.service.api.ApiFactory;
 import io.forus.kindpakket.android.kindpakket.util.RestServiceTestHelper;
+import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
+import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
 import io.forus.kindpakket.android.kindpakket.view.LoginActivity;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
@@ -47,6 +53,14 @@ public class LoginActivityTest {
         ApiFactory.build(server.url("/").toString());
     }
 
+    @Test
+    public void render() {
+        Intent intent = new Intent();
+        mActivityRule.launchActivity(intent);
+
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
+    }
+
     private void executeUiLogin() {
         onView(ViewMatchers.withId(R.id.login_email))
                 .perform(ViewActions.clearText())
@@ -72,6 +86,7 @@ public class LoginActivityTest {
         mActivityRule.launchActivity(intent);
 
         executeUiLogin();
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
 
         boolean isLoggedIn = prefs.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
         assertEquals("User should now be logged in", true, isLoggedIn);
@@ -91,6 +106,7 @@ public class LoginActivityTest {
         mActivityRule.launchActivity(intent);
 
         executeUiLogin();
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
 
         String errorMessage = getTargetContext().getString(R.string.error_incorrect_password);
         onView(withId(R.id.login_password)).check(matches(hasErrorText(errorMessage)));
