@@ -62,13 +62,16 @@ public class LoginActivityTest {
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
     }
 
-    private void executeUiLogin() {
+    private void insertLoginDetails() {
         onView(ViewMatchers.withId(R.id.login_email))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("test@forus.io"));
         onView(ViewMatchers.withId(R.id.login_password))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("testforusio"));
+    }
+
+    private void executeUiLogin() {
         onView(ViewMatchers.withId(R.id.login_sign_in_button))
                 .perform(ViewActions.click());
     }
@@ -86,8 +89,9 @@ public class LoginActivityTest {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
-        executeUiLogin();
+        insertLoginDetails();
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
+        executeUiLogin();
 
         boolean isLoggedIn = prefs.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
         assertEquals("User should now be logged in", true, isLoggedIn);
@@ -106,6 +110,7 @@ public class LoginActivityTest {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
+        insertLoginDetails();
         executeUiLogin();
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
 
