@@ -1,5 +1,6 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view.registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -13,22 +14,15 @@ import org.junit.runner.RunWith;
 
 import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
 import io.forus.kindpakket.android.kindpakket.view.registration.RegistrationActivity;
-import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherProcessActivity;
 
 @RunWith(AndroidJUnit4.class)
-public class RegistrationActivityTest extends InstrumentationTestCase {
+public class RegistrationActivityTest {
     @Rule
     public IntentsTestRule<RegistrationActivity> mActivityRule =
             new IntentsTestRule<>(RegistrationActivity.class, true, false);
 
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-    }
-
     @Test
-    public void render() {
+    public void render() throws Exception {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 

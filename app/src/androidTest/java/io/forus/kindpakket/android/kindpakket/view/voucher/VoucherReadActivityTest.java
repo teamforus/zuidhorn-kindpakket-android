@@ -1,6 +1,7 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view.voucher;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,22 +13,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
+import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
+import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
+import static junit.framework.Assert.assertEquals;
+
 @RunWith(AndroidJUnit4.class)
-public class VoucherReadActivityTest extends InstrumentationTestCase {
+public class VoucherReadActivityTest {
     @Rule
     public IntentsTestRule<VoucherReadActivity> mActivityRule =
             new IntentsTestRule<>(VoucherReadActivity.class, true, false);
 
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-    }
-
     @Test
-    public void render() {
+    public void render() throws Exception {
+        SharedPreferences settings = InstrumentationRegistry.getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
+        settings.edit().putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true).apply();
+        assertEquals("Not correctly initialized", true, PreferencesChecker.alreadyLoggedIn(InstrumentationRegistry.getTargetContext()));
+
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 

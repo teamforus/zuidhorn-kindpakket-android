@@ -1,4 +1,4 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view;
 
 
 import android.content.SharedPreferences;
@@ -15,6 +15,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
 import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
@@ -28,10 +29,10 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void render() {
-        SharedPreferences settings = mActivityRule.getActivity().getSharedPreferences(SettingParams.PREFS_NAME, 0);
+    public void render() throws Exception {
+        SharedPreferences settings = InstrumentationRegistry.getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
         settings.edit().remove(SettingParams.PREFS_USER_LOGGED_IN).apply();
-        assertEquals("Not correctly initialized", false, PreferencesChecker.alreadyLoggedIn(mActivityRule.getActivity()));
+        assertEquals("Not correctly initialized", false, PreferencesChecker.alreadyLoggedIn(InstrumentationRegistry.getTargetContext()));
 
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity(), mActivityRule.getActivity().findViewById(R.id.activity_main));
     }

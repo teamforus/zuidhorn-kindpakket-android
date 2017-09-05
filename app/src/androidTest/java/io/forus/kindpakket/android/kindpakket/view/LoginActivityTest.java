@@ -1,4 +1,4 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiFactory;
 import io.forus.kindpakket.android.kindpakket.util.RestServiceTestHelper;
 import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
