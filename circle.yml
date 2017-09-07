@@ -36,11 +36,14 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
+          name: Run dry tests
+          command: ./gradlew lint test assembleRelease
+      - run:
           name: Wait for emulator
           command: circle-android wait-for-boot
       - run:
-          name: Run Tests
-          command: ./gradlew lint test connectedAndroidTest assembleRelease
+          name: Run emulator tests
+          command: ./gradlew connectedAndroidTest
       - run:
           name: Take screenshots
           command: ./gradlew screenshotTests
