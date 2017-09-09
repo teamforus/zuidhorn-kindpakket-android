@@ -5,7 +5,6 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.support.multidex.MultiDex;
 import android.support.test.runner.AndroidJUnitRunner;
 
 import com.facebook.testing.screenshot.ScreenshotRunner;
@@ -31,7 +30,6 @@ public class ScreenshotTestRunner extends AndroidJUnitRunner {
 
     @Override
     public void onCreate(Bundle args) {
-        MultiDex.install(getTargetContext());
         ScreenshotRunner.onCreate(this, args);
         super.onCreate(args);
     }
