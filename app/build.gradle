@@ -17,6 +17,9 @@ android {
         customTestRunner = true
         referenceDir = "$projectDir/build/reports/screenshots"
     }
+    testOptions {
+        animationsDisabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
