@@ -18,6 +18,7 @@ import io.forus.kindpakket.android.kindpakket.utils.OAuthServiceAdapter;
 import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.ScannerActivity;
+import io.forus.kindpakket.android.kindpakket.view.terminal.TerminalInfoActivity;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
 
 public class VoucherReadActivity extends AppCompatActivity {
@@ -54,6 +55,15 @@ public class VoucherReadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent scannerIntent = new Intent(VoucherReadActivity.this, ScannerActivity.class);
                 startActivityForResult(scannerIntent, SCAN_CODE_REQUEST);
+            }
+        });
+
+        final Button addTerminalButton = (Button) findViewById(R.id.voucher_read_add_terminal);
+        addTerminalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent scannerIntent = new Intent(VoucherReadActivity.this, TerminalInfoActivity.class);
+                startActivity(scannerIntent);
             }
         });
 

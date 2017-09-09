@@ -21,6 +21,7 @@ public class ApiFactory {
     private static ApiFactory instance = new ApiFactory(apiUrl);
 
     private final OAuthServiceApi oAuthServiceApi;
+    private final ShopkeeperServiceApi shopkeeperServiceApi;
     private final UserServiceApi userServiceApi;
     private final VoucherServiceApi voucherServiceApi;
 
@@ -53,6 +54,7 @@ public class ApiFactory {
                 .build();
 
         oAuthServiceApi = retrofit.create(OAuthServiceApi.class);
+        shopkeeperServiceApi = retrofit.create(ShopkeeperServiceApi.class);
         userServiceApi = retrofit.create(UserServiceApi.class);
         voucherServiceApi = retrofit.create(VoucherServiceApi.class);
     }
@@ -64,6 +66,10 @@ public class ApiFactory {
 
     public static OAuthServiceApi getOAuthServiceApi() {
         return instance.oAuthServiceApi;
+    }
+
+    public static ShopkeeperServiceApi getShopkeeperServiceApi() {
+        return instance.shopkeeperServiceApi;
     }
 
     public static UserServiceApi getUserApi() {

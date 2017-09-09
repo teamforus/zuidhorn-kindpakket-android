@@ -2,6 +2,7 @@ package io.forus.kindpakket.android.kindpakket.service;
 
 public class ServiceProvider {
     private static OAuthService oAuthService;
+    private static ShopkeeperService shopkeeperService;
     private static UserService userService;
     private static VoucherService voucherService;
 
@@ -13,6 +14,13 @@ public class ServiceProvider {
             oAuthService = new OAuthService();
         }
         return oAuthService;
+    }
+
+    public static synchronized ShopkeeperService getShopkeeperService() {
+        if (shopkeeperService == null) {
+            shopkeeperService = new ShopkeeperService();
+        }
+        return shopkeeperService;
     }
 
     public static synchronized UserService getUserService() {

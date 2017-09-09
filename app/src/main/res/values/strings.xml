@@ -53,6 +53,11 @@
     <string name="voucher_process_currency">EUR</string>
     <string name="voucher_process_button">Bevestig</string>
 
+    <!-- Strings related to terminals -->
+    <string name="terminal_add">Add terminal</string>
+    <string name="terminal_text">Scan this code with another phone to add another scanning terminal</string>
+    <string name="terminal_qr_generate_error">Error during generation of QR-Code</string>
+
     <!-- Exceptions -->
     <string name="exception_server_response_failure">Unable to connect to server</string>
     <string name="exception_server_response_notok">Invalid response from server</string>
