@@ -29,6 +29,7 @@ import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast
 
 public class RegistrationActivity extends AppCompatActivity {
     private final String LOG_NAME = RegistrationActivity.class.getName();
+    private boolean currentlyRegistering = false;
 
     private View progressView;
     private View registrationView;
@@ -66,6 +67,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void processInput() {
+        if(currentlyRegistering) {
+            return;
+        }
+
         boolean cancel = false;
         View focusView = null;
 
@@ -168,6 +173,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     private void showProgress(final boolean show) {
+        currentlyRegistering = show;
+
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
