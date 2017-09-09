@@ -1,6 +1,8 @@
 package io.forus.kindpakket.android.kindpakket.service.api;
 
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -15,6 +17,7 @@ public class ApiFactory {
     // Not set to final, to allow testing
     public static String API_URL = "http://mvp.forus.io/";
 
+    private static final String LOG_NAME = ApiFactory.class.getName();
     private static ApiFactory instance = new ApiFactory();
 
     private final OAuthServiceApi oAuthServiceApi;
@@ -53,6 +56,7 @@ public class ApiFactory {
     }
 
     public static synchronized void build() {
+        Log.d(LOG_NAME, "using api url: " + API_URL);
         instance = new ApiFactory();
     }
 

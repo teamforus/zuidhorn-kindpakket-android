@@ -30,10 +30,11 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static junit.framework.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityTest extends InstrumentationTestCase {
+public class LoginActivityTest {
     @Rule
     public IntentsTestRule<LoginActivity> mActivityRule =
             new IntentsTestRule<>(LoginActivity.class, true, false);
@@ -41,11 +42,8 @@ public class LoginActivityTest extends InstrumentationTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
         server = new MockWebServer();
         server.start();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         ApiFactory.API_URL = server.url("/").toString();
         ApiFactory.build();
     }
@@ -66,14 +64,16 @@ public class LoginActivityTest extends InstrumentationTestCase {
         String fileName = "oauth_token_200_ok.json";
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
-                .setBody(RestServiceTestHelper.getStringFromFile(getInstrumentation().getContext(), fileName)));
+                .setBody(RestServiceTestHelper.getStringFromFile(InstrumentationRegistry.getInstrumentation().getContext(), fileName)));
+
+        SharedPreferences prefs = getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
+        prefs.edit().remove(SettingParams.PREFS_USER_LOGGED_IN).apply();
 
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
         executeUiLogin();
 
-        SharedPreferences prefs = getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
         boolean isLoggedIn = prefs.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
         assertEquals("User should now be logged in", true, isLoggedIn);
 
@@ -86,7 +86,7 @@ public class LoginActivityTest extends InstrumentationTestCase {
 
         server.enqueue(new MockResponse()
                 .setResponseCode(401)
-                .setBody(RestServiceTestHelper.getStringFromFile(getInstrumentation().getContext(), fileName)));
+                .setBody(RestServiceTestHelper.getStringFromFile(InstrumentationRegistry.getInstrumentation().getContext(), fileName)));
 
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
@@ -99,9 +99,6 @@ public class LoginActivityTest extends InstrumentationTestCase {
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
-
         server.shutdown();
     }
-
 }
