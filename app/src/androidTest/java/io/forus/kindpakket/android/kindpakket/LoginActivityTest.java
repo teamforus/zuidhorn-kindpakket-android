@@ -44,8 +44,7 @@ public class LoginActivityTest {
     public void setUp() throws Exception {
         server = new MockWebServer();
         server.start();
-        ApiFactory.API_URL = server.url("/").toString();
-        ApiFactory.build();
+        ApiFactory.build(server.url("/").toString());
     }
 
     private void executeUiLogin() {
