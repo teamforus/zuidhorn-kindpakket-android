@@ -1,6 +1,8 @@
 package io.forus.kindpakket.android.kindpakket.service.api;
 
 
+import android.util.Log;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -13,15 +15,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiFactory {
     // Not set to final, to allow testing
-    public static String API_URL = "http://mvp.forus.io/";
+    private static String apiUrl = "http://mvp.forus.io/";
 
-    private static ApiFactory instance = new ApiFactory();
+    private static final String LOG_NAME = ApiFactory.class.getName();
+    private static ApiFactory instance = new ApiFactory(apiUrl);
 
     private final OAuthServiceApi oAuthServiceApi;
     private final UserServiceApi userServiceApi;
     private final VoucherServiceApi voucherServiceApi;
 
-    private ApiFactory() {
+    private ApiFactory(String url) {
+        apiUrl = url;
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -42,7 +47,7 @@ public class ApiFactory {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL)
+                .baseUrl(apiUrl)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -52,8 +57,9 @@ public class ApiFactory {
         voucherServiceApi = retrofit.create(VoucherServiceApi.class);
     }
 
-    public static synchronized void build() {
-        instance = new ApiFactory();
+    public static synchronized void build(String url) {
+        instance = new ApiFactory(url);
+        Log.d(LOG_NAME, "using api url: " + apiUrl);
     }
 
     public static OAuthServiceApi getOAuthServiceApi() {
