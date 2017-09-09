@@ -2,9 +2,11 @@ package io.forus.kindpakket.android.kindpakket.view.registration;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -67,7 +69,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void processInput() {
-        if(currentlyRegistering) {
+        if (currentlyRegistering) {
             return;
         }
 
@@ -171,28 +173,31 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        currentlyRegistering = show;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
+            registrationView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
 
-        registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
-        registrationView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
-
-        progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        progressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 }
