@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-public class User {
+public class User extends ApiBase {
     public static final User INVALID = null;
 
     @SerializedName("user_id")

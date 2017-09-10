@@ -16,10 +16,10 @@ public class ApiCallableExecuter {
             try {
                 onSuccessCallable.call(response);
             } catch (Exception e) {
-                Log.w(LOG_NAME, "onSuccessCallable Callable exception " + e.getLocalizedMessage());
+                Log.i(LOG_NAME, "onSuccessCallable Callable exception " + e.getLocalizedMessage());
             }
         } else {
-            Log.w(LOG_NAME, "onSuccessCallable==null");
+            Log.i(LOG_NAME, "onSuccessCallable==null");
         }
     }
 
@@ -29,7 +29,7 @@ public class ApiCallableExecuter {
     protected void onFailureCallable(ApiCallable.Failure onFailureCallable,
                                      ErrorMessage errorMessage) {
         // Log the throwable, just in case we will not handle the error
-        Log.i(LOG_NAME, errorMessage.getDebugMessage());
+        Log.w(LOG_NAME, errorMessage.getDebugMessage());
 
         if (onFailureCallable != null) {
             try {

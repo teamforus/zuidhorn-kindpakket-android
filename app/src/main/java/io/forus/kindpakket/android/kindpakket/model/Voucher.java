@@ -2,7 +2,7 @@ package io.forus.kindpakket.android.kindpakket.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Voucher {
+public class Voucher extends ApiBase {
     public static final Voucher INVALID = null;
 
     private String code;

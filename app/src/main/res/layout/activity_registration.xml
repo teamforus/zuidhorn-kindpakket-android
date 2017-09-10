@@ -48,7 +48,6 @@
                     android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -100,7 +99,28 @@
                     android:layout_height="wrap_content"
                     android:text="@string/registration_button" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/registration_await"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="end"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/registration_await_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_await_text" />
+
+        <Button
+            android:id="@+id/registration_await_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_await_button" />
+    </LinearLayout>
+
 </LinearLayout>

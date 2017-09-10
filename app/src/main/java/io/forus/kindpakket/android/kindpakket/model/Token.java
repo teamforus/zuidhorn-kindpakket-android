@@ -2,7 +2,9 @@ package io.forus.kindpakket.android.kindpakket.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Token {
+import java.io.Serializable;
+
+public class Token extends ApiBase implements Serializable {
     @SerializedName("access_token")
     String accessToken;
 
@@ -14,6 +16,13 @@ public class Token {
 
     @SerializedName("token_type")
     String tokenType;
+
+    public Token(String accessToken, String expiresIn, String refreshToken, String tokenType) {
+        this.accessToken = accessToken;
+        this.expiresIn = expiresIn;
+        this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+    }
 
     public String getAccessToken() {
         return accessToken;

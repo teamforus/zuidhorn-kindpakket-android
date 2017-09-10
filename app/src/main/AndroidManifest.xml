@@ -43,7 +43,9 @@
         <activity
             android:name=".view.registration.RegistrationActivity"
             android:noHistory="true" />
-        <activity android:name=".view.terminal.TerminalInfoActivity"></activity>
+        <activity
+            android:name=".view.terminal.TerminalInfoActivity"
+            android:noHistory="true"></activity>
     </application>
 
 </manifest>

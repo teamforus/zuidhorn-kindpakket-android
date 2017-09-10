@@ -28,8 +28,8 @@ public class VoucherReadActivityTest {
     @Test
     public void render() throws Exception {
         SharedPreferences settings = InstrumentationRegistry.getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
-        settings.edit().putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true).apply();
-        assertEquals("Not correctly initialized", true, PreferencesChecker.alreadyLoggedIn(InstrumentationRegistry.getTargetContext()));
+        settings.edit().putBoolean(SettingParams.PREFS_TOKEN, true).apply();
+        assertEquals("Not correctly initialized", true, PreferencesChecker.hasToken(InstrumentationRegistry.getTargetContext()));
 
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);

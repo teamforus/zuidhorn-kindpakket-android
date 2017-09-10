@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -19,11 +20,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import io.forus.kindpakket.android.kindpakket.R;
-import io.forus.kindpakket.android.kindpakket.model.User;
+import io.forus.kindpakket.android.kindpakket.model.Token;
 import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
+import io.forus.kindpakket.android.kindpakket.utils.Utils;
 import io.forus.kindpakket.android.kindpakket.utils.Validator;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.LoginActivity;
@@ -39,11 +41,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText emailView;
     private EditText kvkView;
     private EditText ibanView;
-    private EditText companynameView;
+    private Button submitButton;
+    private Button checkStatusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (PreferencesChecker.alreadyRegistered(this)) {
+        if (PreferencesChecker.hasToken(this)) {
             setResult(RESULT_CANCELED);
             finish();
         }
@@ -57,15 +60,40 @@ public class RegistrationActivity extends AppCompatActivity {
         emailView = (EditText) findViewById(R.id.registration_email);
         kvkView = (EditText) findViewById(R.id.registration_kvk);
         ibanView = (EditText) findViewById(R.id.registration_iban);
-        companynameView = (EditText) findViewById(R.id.registration_companyname);
 
-        Button submitButton = (Button) findViewById(R.id.registration_button);
+        submitButton = (Button) findViewById(R.id.registration_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 processInput();
             }
         });
+
+        checkStatusButton = (Button) findViewById(R.id.registration_await_button);
+        final Context c = this;
+        checkStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String token = ServiceProvider.getShopkeeperService(c).getToken();
+                ServiceProvider.getShopkeeperService(c).deviceLogin(token, new ApiCallable.Success<Token>() {
+                    @Override
+                    public void call(Token param) {
+                        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                }, new ApiCallableFailureToast(RegistrationActivity.this));
+            }
+        });
+
+        // Load defaults
+        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
+        emailView.setText(settings.getString(SettingParams.PREFS_USER_EMAIL, ""));
+        kvkView.setText(settings.getString(SettingParams.PREFS_USER_KVK, ""));
+        ibanView.setText(settings.getString(SettingParams.PREFS_USER_IBAN, ""));
+
+        if (PreferencesChecker.hasToken(this)) {
+            tokenReceived();
+        }
     }
 
     private void processInput() {
@@ -81,7 +109,6 @@ public class RegistrationActivity extends AppCompatActivity {
         emailView.setError(null);
         kvkView.setError(null);
         ibanView.setError(null);
-        companynameView.setError(null);
 
         Future<Boolean> validIban = Validator.isIbanValid(ibanView.getText().toString());
         try {
@@ -105,16 +132,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 ibanView.setError(getString(R.string.error_invalid_iban));
                 focusView = ibanView;
                 cancel = true;
-            } else if (TextUtils.isEmpty(companynameView.getText())) {
-                companynameView.setError(getString(R.string.error_field_required));
-                focusView = companynameView;
-                cancel = true;
             }
         } catch (InterruptedException | ExecutionException e) {
             Log.e(LOG_NAME, "error during validation", e);
-            companynameView.setError(getString(R.string.registration_failed));
-            focusView = companynameView;
-            cancel = true;
+            emailView.setError(getString(R.string.registration_failed));
         }
 
         if (cancel) {
@@ -123,17 +144,15 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             saveUserInput(emailView.getText().toString(),
                     kvkView.getText().toString(),
-                    ibanView.getText().toString(),
-                    companynameView.getText().toString());
+                    ibanView.getText().toString());
 
             executeRegisterRequest(emailView.getText().toString(),
                     kvkView.getText().toString(),
-                    ibanView.getText().toString(),
-                    companynameView.getText().toString());
+                    ibanView.getText().toString());
         }
     }
 
-    private void saveUserInput(String email, String kvk, String iban, String companyname) {
+    private void saveUserInput(String email, String kvk, String iban) {
         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
 
         final SharedPreferences.Editor editor = settings.edit();
@@ -141,27 +160,22 @@ public class RegistrationActivity extends AppCompatActivity {
         editor.remove(SettingParams.PREFS_USER_PASS);
         editor.putString(SettingParams.PREFS_USER_KVK, kvk);
         editor.putString(SettingParams.PREFS_USER_IBAN, iban);
-        editor.putString(SettingParams.PREFS_USER_COMPANYNAME, companyname);
         editor.apply();
     }
 
-    private void executeRegisterRequest(String email, String kvk, String iban, String companyname) {
-
+    private void executeRegisterRequest(String email, String kvk, String iban) {
         final Activity activity = this;
-        ServiceProvider.getUserService().register(
-                email, kvk, iban, companyname,
-                new ApiCallable.Success<User>() {
+        ServiceProvider.getShopkeeperService(activity).register(
+                email, kvk, iban,
+                new ApiCallable.Success<Token>() {
                     @Override
-                    public void call(User param) {
+                    public void call(Token param) {
                         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
                         final SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean(SettingParams.PREFS_USER_REGISTERED, true);
+                        editor.putBoolean(SettingParams.PREFS_REGISTERED, true);
                         editor.apply();
 
-                        showProgress(false);
-
-                        Intent intent = new Intent(activity, LoginActivity.class);
-                        startActivity(intent);
+                        tokenReceived();
                     }
                 },
                 new ApiCallable.Failure() {
@@ -199,5 +213,19 @@ public class RegistrationActivity extends AppCompatActivity {
             progressView.setVisibility(show ? View.VISIBLE : View.GONE);
             registrationView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    private void tokenReceived() {
+        showProgress(false);
+
+        emailView.setEnabled(false);
+        kvkView.setEnabled(false);
+        ibanView.setEnabled(false);
+        submitButton.setEnabled(false);
+
+        View view = findViewById(R.id.registration_await);
+        view.setVisibility(View.VISIBLE);
+
+        checkStatusButton.performClick();
     }
 }

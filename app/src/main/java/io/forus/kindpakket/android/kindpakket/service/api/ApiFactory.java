@@ -20,9 +20,7 @@ public class ApiFactory {
     private static final String LOG_NAME = ApiFactory.class.getName();
     private static ApiFactory instance = new ApiFactory(apiUrl);
 
-    private final OAuthServiceApi oAuthServiceApi;
     private final ShopkeeperServiceApi shopkeeperServiceApi;
-    private final UserServiceApi userServiceApi;
     private final VoucherServiceApi voucherServiceApi;
 
     private ApiFactory(String url) {
@@ -53,9 +51,7 @@ public class ApiFactory {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        oAuthServiceApi = retrofit.create(OAuthServiceApi.class);
         shopkeeperServiceApi = retrofit.create(ShopkeeperServiceApi.class);
-        userServiceApi = retrofit.create(UserServiceApi.class);
         voucherServiceApi = retrofit.create(VoucherServiceApi.class);
     }
 
@@ -64,16 +60,8 @@ public class ApiFactory {
         Log.d(LOG_NAME, "using api url: " + apiUrl);
     }
 
-    public static OAuthServiceApi getOAuthServiceApi() {
-        return instance.oAuthServiceApi;
-    }
-
     public static ShopkeeperServiceApi getShopkeeperServiceApi() {
         return instance.shopkeeperServiceApi;
-    }
-
-    public static UserServiceApi getUserApi() {
-        return instance.userServiceApi;
     }
 
     public static VoucherServiceApi getVoucherServiceApi() {

@@ -1,33 +1,19 @@
 package io.forus.kindpakket.android.kindpakket.service;
 
+import android.content.Context;
+
 public class ServiceProvider {
-    private static OAuthService oAuthService;
     private static ShopkeeperService shopkeeperService;
-    private static UserService userService;
     private static VoucherService voucherService;
 
     private ServiceProvider() {
     }
 
-    public static synchronized OAuthService getOAuthService() {
-        if (oAuthService == null) {
-            oAuthService = new OAuthService();
-        }
-        return oAuthService;
-    }
-
-    public static synchronized ShopkeeperService getShopkeeperService() {
+    public static synchronized ShopkeeperService getShopkeeperService(Context c) {
         if (shopkeeperService == null) {
-            shopkeeperService = new ShopkeeperService();
+            shopkeeperService = new ShopkeeperService(c);
         }
         return shopkeeperService;
-    }
-
-    public static synchronized UserService getUserService() {
-        if (userService == null) {
-            userService = new UserService();
-        }
-        return userService;
     }
 
     public static synchronized VoucherService getVoucherService() {

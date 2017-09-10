@@ -31,8 +31,8 @@ public class MainActivityTest {
     @Test
     public void render() throws Exception {
         SharedPreferences settings = InstrumentationRegistry.getTargetContext().getSharedPreferences(SettingParams.PREFS_NAME, 0);
-        settings.edit().remove(SettingParams.PREFS_USER_LOGGED_IN).apply();
-        assertEquals("Not correctly initialized", false, PreferencesChecker.alreadyLoggedIn(InstrumentationRegistry.getTargetContext()));
+        settings.edit().remove(SettingParams.PREFS_TOKEN).apply();
+        assertEquals("Not correctly initialized", false, PreferencesChecker.hasToken(InstrumentationRegistry.getTargetContext()));
 
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity(), mActivityRule.getActivity().findViewById(R.id.activity_main));
     }

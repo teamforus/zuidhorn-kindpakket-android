@@ -7,13 +7,13 @@ public class PreferencesChecker {
     private PreferencesChecker() {
     }
 
-    public static boolean alreadyLoggedIn(Context context) {
+    public static boolean isLoggedIn(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);
-        return settings.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
+        return settings.getBoolean(SettingParams.PREFS_LOGGED_IN, false);
     }
 
-    public static boolean alreadyRegistered(Context context) {
+    public static boolean hasToken(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);
-        return settings.getBoolean(SettingParams.PREFS_USER_REGISTERED, false);
+        return settings.contains(SettingParams.PREFS_TOKEN);
     }
 }

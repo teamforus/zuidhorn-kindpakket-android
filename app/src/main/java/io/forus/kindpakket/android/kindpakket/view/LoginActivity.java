@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
         // Load defaults
         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
         mEmailView.setText(settings.getString(SettingParams.PREFS_USER_EMAIL, ""));
@@ -153,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void executeLoginRequest(String email, String password) {
         final Context context = this;
-        ServiceProvider.getOAuthService().loadToken(
+        ServiceProvider.getShopkeeperService(context).loadToken(
                 email,
                 password,
                 new ApiCallable.Success<Token>() {
@@ -164,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
                         final SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean(SettingParams.PREFS_USER_LOGGED_IN, true);
+                        editor.putBoolean(SettingParams.PREFS_LOGGED_IN, true);
                         editor.apply();
 
                         Intent intent = new Intent(context, VoucherReadActivity.class);

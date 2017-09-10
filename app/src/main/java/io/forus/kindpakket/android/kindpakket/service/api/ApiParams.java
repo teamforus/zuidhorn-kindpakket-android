@@ -16,10 +16,10 @@ interface ApiParams {
     String URL_OAUTH = URL_APP + "/oauth";
     String URL_OAUTH_TOKEN = URL_OAUTH + "/token";
 
-    String URL_SHOPKEEPER_DEVICE_TOKEN = URL_APP + "/shop-keeper/device/token";
-
-    String URL_USER = URL_APP + "/user";
-    String URL_USER_REGISTER = URL_APP + "/shop-keeper/sign-up";
+    String URL_SHOPKEEPER = URL_APP + "/shop-keeper";
+    String URL_SHOPKEEPER_DEVICE = URL_SHOPKEEPER + "/device";
+    String URL_SHOPKEEPER_DEVICE_TOKEN = URL_SHOPKEEPER_DEVICE + "/token";
+    String URL_SHOPKEEPER_SIGNUP = URL_SHOPKEEPER + "/sign-up";
 
     String URL_VOUCHER = URL_APP + "/voucher";
     String URL_VOUCHER_ID = URL_VOUCHER + "/{id}";

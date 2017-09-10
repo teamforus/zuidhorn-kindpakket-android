@@ -8,6 +8,8 @@
     <string name="main_login_button">Inloggen</string>
     <string name="main_register_text">Eerste keer?</string>
     <string name="main_register_button">Aanmelden</string>
+    <string name="main_terminal_text">Using multiple terminals?</string>
+    <string name="main_terminal_button">Add terminal</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -30,6 +32,8 @@
     <string name="registration_companyname">Bedrijfsnaam</string>
     <string name="registration_button">Bevestig</string>
     <string name="registration_failed">The registration failed. Please try again later.</string>
+    <string name="registration_await_text">Your request needs to be approved by an external party. Press button to check status</string>
+    <string name="registration_await_button">Retry</string>
 
     <!-- Strings related to scanning -->
     <string name="scanner_result">Scanned</string>
