@@ -11,8 +11,8 @@
         android:id="@+id/voucher_process_budget_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:layout_marginBottom="@dimen/voucher_process_vertical_spacing"
+        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:gravity="center"
         android:text="@string/voucher_process_budget_text"
         android:textAlignment="center"
@@ -24,8 +24,8 @@
         android:id="@+id/voucher_process_budget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:layout_marginBottom="@dimen/voucher_process_vertical_spacing"
+        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:gravity="center"
         android:text="@string/voucher_process_budget"
         android:textAlignment="center"
@@ -38,8 +38,8 @@
         android:id="@+id/voucher_process_use_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:layout_marginBottom="@dimen/voucher_process_vertical_spacing"
+        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:gravity="center"
         android:text="@string/voucher_process_use_text"
         tools:layout_editor_absoluteX="0dp"
@@ -48,40 +48,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:layout_marginBottom="@dimen/voucher_process_vertical_spacing"
+        android:layout_marginTop="@dimen/voucher_process_vertical_spacing"
         android:gravity="center_vertical|center_horizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
-        <TextView
-            android:id="@+id/voucher_process_currency"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/voucher_process_currency" />
+            android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/voucher_process_amount"
+            <TextView
+                android:id="@+id/voucher_process_currency"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="@string/voucher_process_currency" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:hint="@string/voucher_process_amount_hint"
-                android:text="@string/voucher_process_amount_default"
-                android:textAlignment="center" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/voucher_process_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/voucher_process_amount_hint"
+                    android:inputType="numberDecimal"
+                    android:text="@string/voucher_process_amount_default"
+                    android:textAlignment="center" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/voucher_process_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/voucher_process_button" />
+
     </LinearLayout>
 </LinearLayout>

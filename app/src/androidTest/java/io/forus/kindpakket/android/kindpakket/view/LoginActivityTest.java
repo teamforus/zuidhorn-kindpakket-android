@@ -1,4 +1,4 @@
-package io.forus.kindpakket.android.kindpakket;
+package io.forus.kindpakket.android.kindpakket.view;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +8,10 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.InstrumentationTestCase;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.facebook.testing.screenshot.Screenshot;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,8 +19,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.forus.kindpakket.android.kindpakket.R;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiFactory;
 import io.forus.kindpakket.android.kindpakket.util.RestServiceTestHelper;
+import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
+import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
 import io.forus.kindpakket.android.kindpakket.view.LoginActivity;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
@@ -47,13 +54,24 @@ public class LoginActivityTest {
         ApiFactory.build(server.url("/").toString());
     }
 
-    private void executeUiLogin() {
+    @Test
+    public void render() {
+        Intent intent = new Intent();
+        mActivityRule.launchActivity(intent);
+
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
+    }
+
+    private void insertLoginDetails() {
         onView(ViewMatchers.withId(R.id.login_email))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("test@forus.io"));
         onView(ViewMatchers.withId(R.id.login_password))
                 .perform(ViewActions.clearText())
                 .perform(ViewActions.typeText("testforusio"));
+    }
+
+    private void executeUiLogin() {
         onView(ViewMatchers.withId(R.id.login_sign_in_button))
                 .perform(ViewActions.click());
     }
@@ -71,6 +89,8 @@ public class LoginActivityTest {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
+        insertLoginDetails();
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
         executeUiLogin();
 
         boolean isLoggedIn = prefs.getBoolean(SettingParams.PREFS_USER_LOGGED_IN, false);
@@ -90,7 +110,9 @@ public class LoginActivityTest {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
+        insertLoginDetails();
         executeUiLogin();
+        new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());
 
         String errorMessage = getTargetContext().getString(R.string.error_incorrect_password);
         onView(withId(R.id.login_password)).check(matches(hasErrorText(errorMessage)));
