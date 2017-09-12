@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -22,6 +25,7 @@ import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
 
 public class TerminalInfoActivity extends AppCompatActivity {
+    private static final String LOG_NAME = TerminalInfoActivity.class.getName();
 
     private static final int QR_CODE_SIZE = 200;
     private ImageView qrCode;
@@ -49,6 +53,9 @@ public class TerminalInfoActivity extends AppCompatActivity {
                     @Override
                     public void call(Device param) {
                         updateQrCode(param.getToken());
+
+                        ProgressBar progressBar = (ProgressBar) activity.findViewById(R.id.terminal_info_progress);
+                        progressBar.setVisibility(View.GONE);
                     }
                 },
                 new ApiCallable.Failure() {
@@ -76,6 +83,8 @@ public class TerminalInfoActivity extends AppCompatActivity {
             }
             qrCode.setImageBitmap(imageBitmap);
         } catch (WriterException e) {
+            Log.e(LOG_NAME, e.getLocalizedMessage());
+
             Toast.makeText(getApplicationContext(), getString(R.string.terminal_qr_generate_error), Toast.LENGTH_SHORT).show();
         }
     }

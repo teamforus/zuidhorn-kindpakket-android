@@ -1,4 +1,4 @@
-package io.forus.kindpakket.android.kindpakket.view.voucher;
+package io.forus.kindpakket.android.kindpakket.view.terminal;
 
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
@@ -18,11 +18,13 @@ import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
+
 @RunWith(AndroidJUnit4.class)
-public class VoucherProcessActivityTest {
+public class TerminalInfoActivityTest {
     @Rule
-    public IntentsTestRule<VoucherProcessActivity> mActivityRule =
-            new IntentsTestRule<>(VoucherProcessActivity.class, true, false);
+    public IntentsTestRule<TerminalInfoActivity> mActivityRule =
+            new IntentsTestRule<>(TerminalInfoActivity.class, true, false);
+
     private MockWebServer server;
 
     @Before
@@ -41,12 +43,13 @@ public class VoucherProcessActivityTest {
     public void render() throws Exception {
         PreferencesUtil.setLoginStatus(true, true);
 
+        String fileName = "terminalinfo_add_qr_200_ok.json";
+
         server.enqueue(new MockResponse()
                 .setResponseCode(200)
-                .setBody(RestServiceTestHelper.getStringFromFile(InstrumentationRegistry.getContext(), "voucher_get_200.json")));
+                .setBody(RestServiceTestHelper.getStringFromFile(InstrumentationRegistry.getInstrumentation().getContext(), fileName)));
 
         Intent intent = new Intent();
-        intent.putExtra(VoucherProcessActivity.INTENT_CODE, "VIES-2F9M-J8RR-TC5W");
         mActivityRule.launchActivity(intent);
 
         new ScreenshotUtil(mActivityRule.getActivity()).snap(mActivityRule.getActivity());

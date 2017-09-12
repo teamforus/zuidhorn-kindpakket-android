@@ -67,28 +67,23 @@ public class VoucherProcessActivity extends AppCompatActivity {
         });
 
         final TextView budgetView = (TextView) findViewById(R.id.voucher_process_budget);
-        budgetView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServiceProvider.getVoucherService().getVoucher(voucherCode,
-                        ServiceProvider.getShopkeeperService(activity).getToken(),
-                        new ApiCallable.Success<Voucher>() {
-                            @Override
-                            public void call(Voucher voucher) {
-                                Log.i(LOG_NAME, voucher.toString());
-                                String amount = String.format(
-                                        Utils.getCurrentLocale(activity),
-                                        "%.2f", voucher.getMaxAmount());
-                                budgetView.setText(amount);
-                            }
-                        },
-                        new ApiCallable.Failure() {
-                            @Override
-                            public void call(ErrorMessage errorMessage) {
-                                new ApiCallableFailureToast(activity).call(errorMessage);
-                            }
-                        });
-            }
-        });
+        ServiceProvider.getVoucherService().getVoucher(voucherCode,
+                ServiceProvider.getShopkeeperService(activity).getToken(),
+                new ApiCallable.Success<Voucher>() {
+                    @Override
+                    public void call(Voucher voucher) {
+                        Log.i(LOG_NAME, voucher.toString());
+                        String amount = String.format(
+                                Utils.getCurrentLocale(activity),
+                                "%.2f", voucher.getMaxAmount());
+                        budgetView.setText(amount);
+                    }
+                },
+                new ApiCallable.Failure() {
+                    @Override
+                    public void call(ErrorMessage errorMessage) {
+                        new ApiCallableFailureToast(activity).call(errorMessage);
+                    }
+                });
     }
 }

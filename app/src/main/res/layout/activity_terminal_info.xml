@@ -14,6 +14,14 @@
         android:layout_height="wrap_content"
         android:text="@string/terminal_text" />
 
+    <ProgressBar
+        android:id="@+id/terminal_info_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible" />
+
     <ImageView
         android:id="@+id/terminal_info_qr"
         android:layout_width="match_parent"

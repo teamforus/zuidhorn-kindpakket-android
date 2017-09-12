@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.forus.kindpakket.android.kindpakket.util.PreferencesUtil;
 import io.forus.kindpakket.android.kindpakket.util.ScreenshotUtil;
 
 
@@ -19,6 +20,8 @@ public class LoginActivityTest {
 
     @Test
     public void render() {
+        PreferencesUtil.setLoginStatus(false, false);
+
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
