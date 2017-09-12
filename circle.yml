@@ -43,10 +43,10 @@ jobs:
           command: circle-android wait-for-boot
       - run:
           name: Run emulator tests
-          command: ./gradlew --stacktrace --info connectedAndroidTest
+          command: ./gradlew connectedAndroidTest
       - run:
           name: Take screenshots
-          command: ./gradlew --stacktrace --info  screenshotTests
+          command: ./gradlew screenshotTests
       - run:
           name: Build apk
           command: ./gradlew assembleRelease
