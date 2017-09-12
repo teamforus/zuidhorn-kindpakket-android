@@ -65,16 +65,16 @@ public class TerminalInfoActivity extends AppCompatActivity {
                     BarcodeFormat.QR_CODE,
                     QR_CODE_SIZE,
                     QR_CODE_SIZE);
-            Bitmap ImageBitmap = Bitmap.createBitmap(QR_CODE_SIZE,
+            Bitmap imageBitmap = Bitmap.createBitmap(QR_CODE_SIZE,
                     QR_CODE_SIZE,
                     Bitmap.Config.ARGB_8888);
 
             for (int i = 0; i < QR_CODE_SIZE; i++) {//width
                 for (int j = 0; j < QR_CODE_SIZE; j++) {//height
-                    ImageBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
+                    imageBitmap.setPixel(i, j, bm.get(i, j) ? Color.BLACK : Color.WHITE);
                 }
             }
-            qrCode.setImageBitmap(ImageBitmap);
+            qrCode.setImageBitmap(imageBitmap);
         } catch (WriterException e) {
             Toast.makeText(getApplicationContext(), getString(R.string.terminal_qr_generate_error), Toast.LENGTH_SHORT).show();
         }

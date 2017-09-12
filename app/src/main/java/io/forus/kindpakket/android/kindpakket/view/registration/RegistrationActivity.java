@@ -32,7 +32,7 @@ import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private final String LOG_NAME = RegistrationActivity.class.getName();
+    private static final String LOG_NAME = RegistrationActivity.class.getName();
     private boolean currentlyRegistering = false;
 
     private View progressView;
