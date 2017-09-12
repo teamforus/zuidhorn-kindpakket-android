@@ -15,11 +15,13 @@ import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
+import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
 import io.forus.kindpakket.android.kindpakket.view.registration.RegistrationActivity;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
 import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String LOG_NAME = MainActivity.class.getName();
     private static final int SCAN_TERMINAL_TOKEN = 1;
 
     @Override
@@ -28,14 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (PreferencesChecker.isLoggedIn(this)) {
-            Intent intent = new Intent(this, VoucherReadActivity.class);
-            startActivity(intent);
-        } else if (PreferencesChecker.hasToken(this)) {
-            Intent intent = new Intent(this, RegistrationActivity.class);
-            startActivity(intent);
-        }
 
         final Context context = this;
         final Button loginButton = (Button) findViewById(R.id.main_login_button);
@@ -59,6 +53,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(scannerIntent, SCAN_TERMINAL_TOKEN);
             }
         });
+
+        String token = ServiceProvider.getShopkeeperService(this).getToken();
+        //Toast.makeText(this, settings.getString(SettingParams.PREFS_TOKEN, "<empty>"), Toast.LENGTH_SHORT).show();
+        if (token != null) {
+            ServiceProvider.getShopkeeperService(this).validateToken(token, new ApiCallable.Success<Void>() {
+                @Override
+                public void call(Void param) {
+                    // has a valid token
+                    Intent intent = new Intent(context, VoucherReadActivity.class);
+                    startActivity(intent);
+                }
+            }, new ApiCallable.Failure() {
+                @Override
+                public void call(ErrorMessage errorMessage) {
+                    // has a token, but does not work -> likely registration not finished
+                    Intent intent = new Intent(context, RegistrationActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

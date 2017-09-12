@@ -10,6 +10,7 @@ import java.util.Map;
 
 import io.forus.kindpakket.android.kindpakket.model.Device;
 import io.forus.kindpakket.android.kindpakket.model.Token;
+import io.forus.kindpakket.android.kindpakket.model.User;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallableExecuter;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiFactory;
@@ -38,27 +39,63 @@ public class ShopkeeperService extends ApiCallableExecuter {
         token = Utils.deserialize(tokenObj, Token.class);
     }
 
-    public static String buildAuthorizationToken(Token token) {
-        //TODO: Is this the right place for this function?
-        return token.getTokenType() + " " + token.getAccessToken();
-    }
-
     public String getToken() {
-        return buildAuthorizationToken(token);
-    }
-
-    private void setToken(Token token) {
-        this.token = token;
-
-        SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(SettingParams.PREFS_TOKEN, Utils.serialize(token));
-        editor.apply();
+        //TODO: Is this the right place for this function?
+        if (token != null) {
+            return token.getTokenType() + " " + token.getAccessToken();
+        }
+        return "";
     }
 
     private boolean hasValidToken() {
         // TODO: check if token is valid according to expires_in
         return token != INVALID;
+    }
+
+    public void validateToken(String token, final ApiCallable.Success<Void> successCallable,
+                              final ApiCallable.Failure failureCallable) {
+        getUser(token, new ApiCallable.Success<User>() {
+            @Override
+            public void call(User param) {
+                SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);
+                final SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean(SettingParams.PREFS_LOGGED_IN, true);
+                editor.apply();
+
+                successCallable.call(null);
+            }
+        }, failureCallable);
+    }
+
+    public void getUser(String token,
+                        final ApiCallable.Success<User> successCallable,
+                        final ApiCallable.Failure failureCallable) {
+        ApiFactory.getShopkeeperServiceApi().getUser(token).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                onGetUserSuccess(response, successCallable, failureCallable);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                onFailureCallable(failureCallable, new ServerFailureErrorMessage(t));
+            }
+        });
+    }
+
+    private void onGetUserSuccess(Response<User> response,
+                                  final ApiCallable.Success<User> successCallable,
+                                  final ApiCallable.Failure failureCallable) {
+        if (response.code() == HttpURLConnection.HTTP_OK) {
+            Log.d(LOG_NAME, response.body().toString());
+
+            onSuccessCallable(successCallable, response.body());
+        } else {
+            Log.e(LOG_NAME, "error receiving user: " + response.raw().message());
+
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            onFailureCallable(failureCallable, errorMessage);
+        }
     }
 
     public void loadToken(
@@ -182,6 +219,17 @@ public class ShopkeeperService extends ApiCallableExecuter {
 
             ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
             onFailureCallable(failureCallable, errorMessage);
+        }
+    }
+
+    private void setToken(Token token) {
+        this.token = token;
+
+        if (token != null) {
+            SharedPreferences settings = context.getSharedPreferences(SettingParams.PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(SettingParams.PREFS_TOKEN, Utils.serialize(token));
+            editor.apply();
         }
     }
 }

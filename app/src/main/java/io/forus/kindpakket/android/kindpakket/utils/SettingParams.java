@@ -4,9 +4,7 @@ package io.forus.kindpakket.android.kindpakket.utils;
 public interface SettingParams {
     String PREFS_NAME = "PrefsFile";
 
-    // Completed the registration process
-    String PREFS_REGISTERED = "registered";
-    // User received a token
+    // User received a token / registered
     String PREFS_TOKEN = "token";
     // User is logged in / was approved (has a valid token)
     String PREFS_LOGGED_IN = "logged_in";

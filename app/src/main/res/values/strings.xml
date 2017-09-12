@@ -21,6 +21,7 @@
     <string name="error_invalid_kvk">The entered kvk is invalid</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_email_used">Have you used this email already before?</string>
     <string name="login_forgot_password">Forgot password?</string>
 
     <!-- Strings related to registration -->
@@ -29,11 +30,14 @@
     <string name="registration_password">Password</string>
     <string name="registration_kvk">KVK nummer</string>
     <string name="registration_iban">IBAN nummer</string>
-    <string name="registration_companyname">Bedrijfsnaam</string>
     <string name="registration_button">Bevestig</string>
     <string name="registration_failed">The registration failed. Please try again later.</string>
     <string name="registration_await_text">Your request needs to be approved by an external party. Press button to check status</string>
     <string name="registration_await_button">Retry</string>
+    <string name="registration_await_status_checking">Checking</string>
+    <string name="registration_await_status_approved">Approved</string>
+    <string name="registration_await_status_notvalided">Not validated</string>
+    <string name="registration_await_status_unapproved">Not approved</string>
 
     <!-- Strings related to scanning -->
     <string name="scanner_result">Scanned</string>

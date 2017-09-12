@@ -5,13 +5,14 @@ import com.google.gson.annotations.SerializedName;
 public class Voucher extends ApiBase {
     public static final Voucher INVALID = null;
 
-    private String code;
+    @SerializedName("public_key")
+    private String publicKey;
 
     @SerializedName("max_amount")
     private float maxAmount;
 
-    public String getCode() {
-        return code;
+    public String getPublicKey() {
+        return publicKey;
     }
 
     public float getMaxAmount() {
@@ -21,7 +22,7 @@ public class Voucher extends ApiBase {
     @Override
     public String toString() {
         return "Voucher{" +
-                "code='" + code + '\'' +
+                "publicKey='" + publicKey + '\'' +
                 ", maxAmount=" + maxAmount +
                 '}';
     }

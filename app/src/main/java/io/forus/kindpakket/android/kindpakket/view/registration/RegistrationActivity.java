@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -25,11 +26,10 @@ import io.forus.kindpakket.android.kindpakket.service.ServiceProvider;
 import io.forus.kindpakket.android.kindpakket.service.api.ApiCallable;
 import io.forus.kindpakket.android.kindpakket.utils.PreferencesChecker;
 import io.forus.kindpakket.android.kindpakket.utils.SettingParams;
-import io.forus.kindpakket.android.kindpakket.utils.Utils;
 import io.forus.kindpakket.android.kindpakket.utils.Validator;
 import io.forus.kindpakket.android.kindpakket.utils.exception.ErrorMessage;
-import io.forus.kindpakket.android.kindpakket.view.LoginActivity;
 import io.forus.kindpakket.android.kindpakket.view.toast.ApiCallableFailureToast;
+import io.forus.kindpakket.android.kindpakket.view.voucher.VoucherReadActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
     private final String LOG_NAME = RegistrationActivity.class.getName();
@@ -43,10 +43,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText ibanView;
     private Button submitButton;
     private Button checkStatusButton;
+    private TextView statusView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (PreferencesChecker.hasToken(this)) {
+        if (PreferencesChecker.isLoggedIn(this)) {
             setResult(RESULT_CANCELED);
             finish();
         }
@@ -60,6 +61,7 @@ public class RegistrationActivity extends AppCompatActivity {
         emailView = (EditText) findViewById(R.id.registration_email);
         kvkView = (EditText) findViewById(R.id.registration_kvk);
         ibanView = (EditText) findViewById(R.id.registration_iban);
+        statusView = (TextView) findViewById(R.id.registration_await_status);
 
         submitButton = (Button) findViewById(R.id.registration_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -74,14 +76,26 @@ public class RegistrationActivity extends AppCompatActivity {
         checkStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                statusView.setText(getString(R.string.registration_await_status_checking));
+                showProgress(true);
+
                 String token = ServiceProvider.getShopkeeperService(c).getToken();
-                ServiceProvider.getShopkeeperService(c).deviceLogin(token, new ApiCallable.Success<Token>() {
+                ServiceProvider.getShopkeeperService(c).validateToken(token, new ApiCallable.Success<Void>() {
                     @Override
-                    public void call(Token param) {
-                        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                    public void call(Void param) {
+                        statusView.setText(getString(R.string.registration_await_status_approved));
+                        showProgress(false);
+
+                        Intent intent = new Intent(RegistrationActivity.this, VoucherReadActivity.class);
                         startActivity(intent);
                     }
-                }, new ApiCallableFailureToast(RegistrationActivity.this));
+                }, new ApiCallable.Failure() {
+                    @Override
+                    public void call(ErrorMessage errorMessage) {
+                        statusView.setText(getString(R.string.registration_await_status_notvalided));
+                        showProgress(false);
+                    }
+                });
             }
         });
 
@@ -111,6 +125,7 @@ public class RegistrationActivity extends AppCompatActivity {
         ibanView.setError(null);
 
         Future<Boolean> validIban = Validator.isIbanValid(ibanView.getText().toString());
+        Future<Boolean> validKvk = Validator.isKvkValid(kvkView.getText().toString());
         try {
             if (TextUtils.isEmpty(emailView.getText())) {
                 emailView.setError(getString(R.string.error_field_required));
@@ -124,6 +139,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 kvkView.setError(getString(R.string.error_field_required));
                 focusView = kvkView;
                 cancel = true;
+            } else if (!validKvk.get()) {
+                kvkView.setError(getString(R.string.error_invalid_kvk));
+                focusView = kvkView;
+                cancel = true;
             } else if (TextUtils.isEmpty(ibanView.getText())) {
                 ibanView.setError(getString(R.string.error_field_required));
                 focusView = ibanView;
@@ -133,7 +152,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 focusView = ibanView;
                 cancel = true;
             }
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (NullPointerException | InterruptedException | ExecutionException e) {
             Log.e(LOG_NAME, "error during validation", e);
             emailView.setError(getString(R.string.registration_failed));
         }
@@ -170,11 +189,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 new ApiCallable.Success<Token>() {
                     @Override
                     public void call(Token param) {
-                        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
-                        final SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean(SettingParams.PREFS_REGISTERED, true);
-                        editor.apply();
-
                         tokenReceived();
                     }
                 },
@@ -182,6 +196,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     @Override
                     public void call(ErrorMessage errorMessage) {
                         showProgress(false);
+
+                        emailView.setError(getString(R.string.error_email_used));
+                        emailView.requestFocus();
+
                         new ApiCallableFailureToast(activity).call(errorMessage);
                     }
                 });
@@ -216,12 +234,12 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void tokenReceived() {
-        showProgress(false);
-
         emailView.setEnabled(false);
         kvkView.setEnabled(false);
         ibanView.setEnabled(false);
         submitButton.setEnabled(false);
+
+        showProgress(false);
 
         View view = findViewById(R.id.registration_await);
         view.setVisibility(View.VISIBLE);

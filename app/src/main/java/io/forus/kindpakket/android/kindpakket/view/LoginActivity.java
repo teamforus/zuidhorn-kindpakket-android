@@ -81,6 +81,19 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
         mEmailView.setText(settings.getString(SettingParams.PREFS_USER_EMAIL, ""));
         mPasswordView.setText(settings.getString(SettingParams.PREFS_USER_PASS, ""));
+
+        String token = ServiceProvider.getShopkeeperService(this).getToken();
+        ServiceProvider.getShopkeeperService(this).validateToken(token, new ApiCallable.Success<Void>() {
+            @Override
+            public void call(Void param) {
+                onSuccessfulLogin();
+            }
+        }, new ApiCallable.Failure() {
+            @Override
+            public void call(ErrorMessage errorMessage) {
+                // no valid login. Thats okay, since this is the login activity
+            }
+        });
     }
 
     private void showWebSite(String url) {
@@ -161,13 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                         currentLoggingIn = false;
                         showProgress(false);
 
-                        SharedPreferences settings = getSharedPreferences(SettingParams.PREFS_NAME, 0);
-                        final SharedPreferences.Editor editor = settings.edit();
-                        editor.putBoolean(SettingParams.PREFS_LOGGED_IN, true);
-                        editor.apply();
-
-                        Intent intent = new Intent(context, VoucherReadActivity.class);
-                        startActivity(intent);
+                        onSuccessfulLogin();
                     }
                 },
                 new ApiCallable.Failure() {
@@ -181,6 +188,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private void onSuccessfulLogin() {
+        Intent intent = new Intent(this, VoucherReadActivity.class);
+        startActivity(intent);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)

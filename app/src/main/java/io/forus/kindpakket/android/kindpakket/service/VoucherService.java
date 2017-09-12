@@ -24,12 +24,12 @@ public class VoucherService extends ApiCallableExecuter {
     VoucherService() {
     }
 
-    public void getVoucher(String code,
+    public void getVoucher(String voucherId,
                            String token,
                            final ApiCallable.Success<Voucher> successCallable,
                            final ApiCallable.Failure failureCallable) {
 
-        ApiFactory.getVoucherServiceApi().getVoucher(token, code).enqueue(new Callback<Voucher>() {
+        ApiFactory.getVoucherServiceApi().getVoucher(token, voucherId).enqueue(new Callback<Voucher>() {
             @Override
             public void onResponse(Call<Voucher> call, Response<Voucher> response) {
                 onGetVoucherSuccess(response, successCallable, failureCallable);
@@ -57,7 +57,7 @@ public class VoucherService extends ApiCallableExecuter {
         }
     }
 
-    public void useVoucher(String code,
+    public void useVoucher(String voucherId,
                            String token,
                            float amount,
                            final ApiCallable.Success<Voucher> successCallable,
@@ -65,7 +65,7 @@ public class VoucherService extends ApiCallableExecuter {
         Map<String, Object> request = new HashMap<>();
         request.put("amount", amount);
 
-        ApiFactory.getVoucherServiceApi().useVoucher(token, code, request).enqueue(new Callback<Voucher>() {
+        ApiFactory.getVoucherServiceApi().useVoucher(token, voucherId, request).enqueue(new Callback<Voucher>() {
             @Override
             public void onResponse(Call<Voucher> call, Response<Voucher> response) {
                 onUseVoucherSuccess(response, successCallable, failureCallable);
