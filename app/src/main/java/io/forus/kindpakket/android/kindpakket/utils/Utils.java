@@ -2,7 +2,6 @@ package io.forus.kindpakket.android.kindpakket.utils;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Patterns;
 
 import com.google.gson.Gson;
 
@@ -20,10 +19,6 @@ public class Utils {
         } else {
             return context.getResources().getConfiguration().locale;
         }
-    }
-
-    public static boolean isEmailValid(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static String serialize(Object obj) {
