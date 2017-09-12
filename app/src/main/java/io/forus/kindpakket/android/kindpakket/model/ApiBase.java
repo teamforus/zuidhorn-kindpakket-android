@@ -1,7 +1,7 @@
 package io.forus.kindpakket.android.kindpakket.model;
 
 
-abstract class ApiBase {
+abstract public class ApiBase {
     String description;
 
     String error;

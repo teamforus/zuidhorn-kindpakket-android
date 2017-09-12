@@ -93,7 +93,7 @@ public class ShopkeeperService extends ApiCallableExecuter {
         } else {
             Log.e(LOG_NAME, "error receiving user: " + response.raw().message());
 
-            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response.body(), response.raw().message());
             onFailureCallable(failureCallable, errorMessage);
         }
     }
@@ -166,7 +166,7 @@ public class ShopkeeperService extends ApiCallableExecuter {
         } else {
             Log.e(LOG_NAME, "error receiving a token: " + response.raw().message());
 
-            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response.body(), response.raw().message());
             onFailureCallable(failureCallable, errorMessage);
         }
     }
@@ -217,7 +217,7 @@ public class ShopkeeperService extends ApiCallableExecuter {
         } else {
             Log.w(LOG_NAME, "error getDeviceToken: " + response.raw().message());
 
-            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response.body(), response.raw().message());
             onFailureCallable(failureCallable, errorMessage);
         }
     }

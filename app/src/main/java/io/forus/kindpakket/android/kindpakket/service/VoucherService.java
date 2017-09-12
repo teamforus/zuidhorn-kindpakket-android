@@ -52,7 +52,7 @@ public class VoucherService extends ApiCallableExecuter {
         } else {
             Log.w(LOG_NAME, "error receiving voucher: " + response.raw().message());
 
-            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response.body(), response.raw().message());
             onFailureCallable(failureCallable, errorMessage);
         }
     }
@@ -88,7 +88,7 @@ public class VoucherService extends ApiCallableExecuter {
         } else {
             Log.w(LOG_NAME, "error using voucher: " + response.raw().message());
 
-            ErrorMessage errorMessage = new ServerResponseErrorMessage(response);
+            ErrorMessage errorMessage = new ServerResponseErrorMessage(response.body(), response.raw().message());
             onFailureCallable(failureCallable, errorMessage);
         }
     }

@@ -68,5 +68,6 @@
 
     <!-- Exceptions -->
     <string name="exception_server_response_failure">Unable to connect to server</string>
-    <string name="exception_server_response_notok">Invalid response from server</string>
+    <string name="exception_server_response_notok">Server answers: </string>
+    <string name="exception_server_response_failed">Invalid response from server</string>
 </resources>
